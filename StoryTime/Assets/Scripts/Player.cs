@@ -16,6 +16,8 @@ public class Player : MonoBehaviour {
     Transform camCopy;
     Vector3 oldInput;
     public GameObject camPlaceholder;
+    public GameObject bButton;
+    GameObject interactable;
     // Use this for initialization
     void Start() {
         cam = Camera.main;
@@ -24,6 +26,12 @@ public class Player : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        if (interactable) {
+            if (Input.GetButtonDown("Interact"))
+                {
+                    interactable.GetComponent<Interactable>().Interact();
+                }
+        }
         yBackup = move.y;
         input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         if (oldInput.magnitude < deadThreshold && input.magnitude > deadThreshold) {
@@ -67,4 +75,27 @@ public class Player : MonoBehaviour {
         return input;
 
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Interactable") {
+            bButton.SetActive(true);
+            interactable = other.gameObject;
+        }
+    }
+    void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Interactable")
+        {
+            bButton.SetActive(false);
+            interactable = null;
+        }
+    }
+   /* void OnTriggerStay(Collider other) {
+        if (other.tag == "Interactable") {
+            if (Input.GetButtonDown("Interact")) {
+                other.GetComponent<Interactable>().Interact();
+            }
+        }
+    }*/
 }
