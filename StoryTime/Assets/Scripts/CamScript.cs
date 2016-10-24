@@ -19,6 +19,9 @@ public class CamScript : MonoBehaviour
     private float x = 0.0f;
     private float y = 0.0f;
 
+    public float xThreshold;
+    public float yThreshold;
+
     // Use this for initialization
     void Start()
     {
@@ -35,6 +38,8 @@ public class CamScript : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
+        print(Input.GetAxis("RotationX"));
+        print(Input.GetAxis("RotationY"));
         if (target)
         {
             distance -= .5f * Input.mouseScrollDelta.y;
@@ -42,8 +47,14 @@ public class CamScript : MonoBehaviour
             {
                 distance = 0;
             }
-            x += Input.GetAxis("RotationX") * xSpeed * 0.02f;
-            y -= Input.GetAxis("RotationY") * ySpeed * 0.02f;
+           // if (Mathf.Abs(Input.GetAxis("RotationX")) > xThreshold)
+           // {
+                x += Input.GetAxis("RotationX") * xSpeed * 0.02f;
+          //  }
+           // if (Mathf.Abs(Input.GetAxis("RotationY")) > yThreshold)
+         //   {
+                y -= Input.GetAxis("RotationY") * ySpeed * 0.02f;
+          //  }
 
             y = ClampAngle(y, yMinLimit, yMaxLimit);
 
