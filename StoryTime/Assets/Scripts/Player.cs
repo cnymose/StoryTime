@@ -17,7 +17,8 @@ public class Player : MonoBehaviour {
     Vector3 oldInput;
     public GameObject camPlaceholder;
     public GameObject bButton;
-    GameObject interactable;
+    public GameObject interactText;
+    public GameObject interactable;
     // Use this for initialization
     void Start() {
         cam = Camera.main;
@@ -78,8 +79,11 @@ public class Player : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
+        print("Entered");
         if (other.tag == "Interactable") {
+            
             bButton.SetActive(true);
+            interactText.SetActive(true);
             interactable = other.gameObject;
         }
     }
@@ -87,6 +91,7 @@ public class Player : MonoBehaviour {
     {
         if (other.tag == "Interactable")
         {
+            interactText.SetActive(false);
             bButton.SetActive(false);
             interactable = null;
         }

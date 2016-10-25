@@ -38,8 +38,8 @@ public class CamScript : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        print(Input.GetAxis("RotationX"));
-        print(Input.GetAxis("RotationY"));
+      //  print(Input.GetAxis("RotationX"));
+        //print(Input.GetAxis("RotationY"));
         if (target)
         {
             distance -= .5f * Input.mouseScrollDelta.y;
