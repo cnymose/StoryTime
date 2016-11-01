@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class Player : MonoBehaviour {
+    public bool canMove = true;
     Camera cam;
     public float movementSpeed;
     public float gravity;
@@ -19,10 +20,13 @@ public class Player : MonoBehaviour {
     public GameObject bButton;
     public GameObject interactText;
     public GameObject interactable;
+    public AudioClip interactClip;
+    AudioSource source;
     // Use this for initialization
     void Start() {
         cam = Camera.main;
         player = GetComponent<CharacterController>();
+        source = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -31,6 +35,8 @@ public class Player : MonoBehaviour {
             if (Input.GetButtonDown("Interact"))
                 {
                     interactable.GetComponent<Interactable>().Interact();
+                source.clip = interactClip;
+                source.Play();
                 }
         }
         yBackup = move.y;
@@ -53,7 +59,10 @@ public class Player : MonoBehaviour {
         {
             transform.LookAt(transform.position + new Vector3(move.x, 0, move.z));
         }
-        player.Move(move * movementSpeed * Time.deltaTime);
+        if (canMove)
+        {
+            player.Move(move * movementSpeed * Time.deltaTime);
+        }
         if (!player.isGrounded)
         {
             move.y -= gravity;

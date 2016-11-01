@@ -5,6 +5,7 @@ public class Movie : MonoBehaviour {
     public MovieTexture movie;
     AudioSource source;
     public AudioClip audClip;
+    
 	// Use this for initialization
 	void Start () {
         GetComponent<Renderer>().material.mainTexture = movie as MovieTexture;
@@ -19,12 +20,12 @@ public class Movie : MonoBehaviour {
     public void PlayMovie() {
         if (!movie.isPlaying)
         {
+            movie.Stop();
+           
             GetComponent<Renderer>().material.color = Color.white;
             source.clip = audClip;
             source.Play();
             movie.Play();
-            
-            
         }
         
     }
