@@ -27,6 +27,7 @@ public class Player : MonoBehaviour {
         cam = Camera.main;
         player = GetComponent<CharacterController>();
         source = GetComponent<AudioSource>();
+        player.enabled = true;
     }
 
     // Update is called once per frame
@@ -47,10 +48,10 @@ public class Player : MonoBehaviour {
             camCopy = copy.transform;
         }
         ThresholdMove(input, inputThreshold);
-        if (camCopy)
+      /*  if (camCopy)
         {
             move = camCopy.TransformDirection(input);
-        }
+        }*/
         ThresholdMove(move, moveThreshold);
         move.x += Mathf.Abs(move.y) * (move.x / (Mathf.Abs(move.x) + Mathf.Abs(move.z)));
         move.z += Mathf.Abs(move.y) * (move.z / (Mathf.Abs(move.x) + Mathf.Abs(move.z)));
