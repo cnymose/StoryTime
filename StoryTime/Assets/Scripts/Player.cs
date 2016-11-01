@@ -22,12 +22,15 @@ public class Player : MonoBehaviour {
     public GameObject interactable;
     public AudioClip interactClip;
     AudioSource source;
+    public float jumpSpeed;
+    public bool grounded;
     // Use this for initialization
     void Start() {
         cam = Camera.main;
         player = GetComponent<CharacterController>();
         source = GetComponent<AudioSource>();
         player.enabled = true;
+       
     }
 
     // Update is called once per frame
@@ -40,14 +43,18 @@ public class Player : MonoBehaviour {
                 source.Play();
                 }
         }
+      
         yBackup = move.y;
         input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        if (oldInput.magnitude < deadThreshold && input.magnitude > deadThreshold) {
-            Destroy(GameObject.Find("CameraPlaceholder(Clone)"));
-            GameObject copy = (GameObject) Instantiate(camPlaceholder, cam.transform.position, cam.transform.rotation);
-            camCopy = copy.transform;
-        }
+       
+        /* if (oldInput.magnitude < deadThreshold && input.magnitude > deadThreshold) {
+             Destroy(GameObject.Find("CameraPlaceholder(Clone)"));
+             GameObject copy = (GameObject) Instantiate(camPlaceholder, cam.transform.position, cam.transform.rotation);
+             camCopy = copy.transform;
+         }*/
+       
         ThresholdMove(input, inputThreshold);
+        move = cam.transform.TransformDirection(input);
       /*  if (camCopy)
         {
             move = camCopy.TransformDirection(input);
@@ -56,6 +63,18 @@ public class Player : MonoBehaviour {
         move.x += Mathf.Abs(move.y) * (move.x / (Mathf.Abs(move.x) + Mathf.Abs(move.z)));
         move.z += Mathf.Abs(move.y) * (move.z / (Mathf.Abs(move.x) + Mathf.Abs(move.z)));
         move.y = yBackup;
+        if (float.IsNaN(move.x))
+        {
+            move.x = 0;
+        }
+        if (float.IsNaN(move.z))
+        {
+            move.z = 0;
+        }
+        if (Input.GetButtonDown("Jump") && player.isGrounded)
+        {
+            move.y = jumpSpeed;
+        }
         if (move.magnitude > lookThreshold)
         {
             transform.LookAt(transform.position + new Vector3(move.x, 0, move.z));
@@ -64,14 +83,13 @@ public class Player : MonoBehaviour {
         {
             player.Move(move * movementSpeed * Time.deltaTime);
         }
-        if (!player.isGrounded)
-        {
+      
+        
             move.y -= gravity;
-        }
-        else {
-            move.y = 0;
-        }
+        
+      
         oldInput = input;
+        grounded = player.isGrounded;
     }
 
     Vector3 ThresholdMove(Vector3 input, float threshold) {
