@@ -12,9 +12,9 @@ public class CameraRotation : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetAxis("RotationX") > threshold)
+        if (Input.GetAxis("RotationY") > threshold)
         {
-            transform.RotateAround(player.position, player.up, rotationSpeed * Input.GetAxis("RotationX") * Time.deltaTime);
+            transform.RotateAround(player.position, player.up, rotationSpeed * Input.GetAxis("Horizontal") * Time.deltaTime);
         }
        // transform.RotateAround(player.position, player.right, rotationSpeed * Input.GetAxis("RotationY") * Time.deltaTime);
         transform.LookAt(player.position);
