@@ -4,8 +4,12 @@ using System.Collections;
 public class Player : MonoBehaviour {
     public bool canMove = true;
     Camera cam;
+    bool jumped;
+    public float gravityScale;
     public float movementSpeed;
+    public float runSpeed;
     public float gravity;
+    Vector3 down = new Vector3(0,0,0);
     public Vector3 move;
     CharacterController player;
     public float lookThreshold;
@@ -24,17 +28,24 @@ public class Player : MonoBehaviour {
     AudioSource source;
     public float jumpSpeed;
     public bool grounded;
+    bool running;
+    Animator anim;
+    
     // Use this for initialization
     void Start() {
         cam = Camera.main;
         player = GetComponent<CharacterController>();
         source = GetComponent<AudioSource>();
         player.enabled = true;
+        anim = GetComponent<Animator>();
        
     }
 
     // Update is called once per frame
     void Update() {
+        jumped = false;
+        running = Running();
+      
         if (interactable) {
             if (Input.GetButtonDown("Interact"))
                 {
@@ -73,6 +84,7 @@ public class Player : MonoBehaviour {
         }
         if (Input.GetButtonDown("Jump") && player.isGrounded)
         {
+            jumped = true;
             move.y = jumpSpeed;
         }
         if (move.magnitude > lookThreshold)
@@ -81,7 +93,18 @@ public class Player : MonoBehaviour {
         }
         if (canMove)
         {
-            player.Move(move * movementSpeed * Time.deltaTime);
+            yBackup = move.y;
+            down.y = move.y;
+            move.y = 0;
+            if (!running)
+            {
+                player.Move(move * movementSpeed * Time.deltaTime);
+            }
+            else {
+                player.Move(move * runSpeed * Time.deltaTime);
+            }
+            player.Move(down * Time.deltaTime * gravityScale);
+            move.y = yBackup;
         }
       
         
@@ -90,6 +113,9 @@ public class Player : MonoBehaviour {
       
         oldInput = input;
         grounded = player.isGrounded;
+        anim.SetBool("Running", running);
+        anim.SetBool("Jumping", jumped);
+        anim.SetFloat("Vel", input.magnitude);
     }
 
     Vector3 ThresholdMove(Vector3 input, float threshold) {
@@ -123,6 +149,9 @@ public class Player : MonoBehaviour {
             bButton.SetActive(false);
             interactable = null;
         }
+    }
+    bool Running() {
+        return Input.GetButton("Run");
     }
    /* void OnTriggerStay(Collider other) {
         if (other.tag == "Interactable") {
