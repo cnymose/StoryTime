@@ -120,9 +120,11 @@ public class Player : MonoBehaviour {
             player.Move(down * gravityScale * Time.deltaTime);
             move.y = yBackup;
         }
-      
-        
+
+        if (!player.isGrounded)
+        {
             move.y -= gravity * Time.deltaTime;
+        }
 
         //Audio on terrain
         if (input.magnitude > 0.05f && !source.isPlaying && player.isGrounded && !jumped) {
