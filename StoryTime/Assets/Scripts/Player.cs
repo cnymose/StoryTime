@@ -42,6 +42,8 @@ public class Player : MonoBehaviour {
     public AudioClip[] drSteps;
     public AudioClip[] moveSounds;
     public AudioClip[] runSounds;
+    public AudioClip jump;
+    public AudioClip land;
 
     // Use this for initialization
     void Start() {
@@ -59,6 +61,7 @@ public class Player : MonoBehaviour {
         jumped = false;
         running = Running();
       
+        //Interact
         if (interactable) {
             if (Input.GetButtonDown("Interact"))
                 {
@@ -71,18 +74,11 @@ public class Player : MonoBehaviour {
         yBackup = move.y;
         input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
        
-        /* if (oldInput.magnitude < deadThreshold && input.magnitude > deadThreshold) {
-             Destroy(GameObject.Find("CameraPlaceholder(Clone)"));
-             GameObject copy = (GameObject) Instantiate(camPlaceholder, cam.transform.position, cam.transform.rotation);
-             camCopy = copy.transform;
-         }*/
+   
        
         ThresholdMove(input, inputThreshold);
         move = cam.transform.TransformDirection(input);
-      /*  if (camCopy)
-        {
-            move = camCopy.TransformDirection(input);
-        }*/
+    
         ThresholdMove(move, moveThreshold);
         move.x += Mathf.Abs(move.y) * (move.x / (Mathf.Abs(move.x) + Mathf.Abs(move.z)));
         move.z += Mathf.Abs(move.y) * (move.z / (Mathf.Abs(move.x) + Mathf.Abs(move.z)));
@@ -95,8 +91,13 @@ public class Player : MonoBehaviour {
         {
             move.z = 0;
         }
+
+        //Jump
         if (Input.GetButtonDown("Jump") && player.isGrounded)
         {
+            source.clip = jump;
+            source.pitch = Random.Range(0.9f, 1.05f);
+            source.Play();
             jumped = true;
             move.y = jumpSpeed;
         }
@@ -116,14 +117,16 @@ public class Player : MonoBehaviour {
             else {
                 player.Move(move * runSpeed * Time.deltaTime);
             }
-            player.Move(down * Time.deltaTime * gravityScale);
+            player.Move(down * gravityScale * Time.deltaTime);
             move.y = yBackup;
         }
       
         
-            move.y -= gravity;
+            move.y -= gravity * Time.deltaTime;
 
-        if (input.magnitude > 0.05f && !source.isPlaying && player.isGrounded) {
+        //Audio on terrain
+        if (input.magnitude > 0.05f && !source.isPlaying && player.isGrounded && !jumped) {
+            source.pitch = 1;
             if (!running)
             {
                 if (terrain == "Grass")
@@ -177,9 +180,9 @@ public class Player : MonoBehaviour {
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit) {
-
+        
         if (hit.gameObject.tag == "Grass") {
-           
+            CheckLand();
             if (!(terrain == "Grass")) {
                 terrain = "Grass";
                 for (int i = 0; i < ambienceObjects.Length; i++) {
@@ -189,8 +192,10 @@ public class Player : MonoBehaviour {
             }
         }
         else if (hit.gameObject.tag == "Sand") {
+            CheckLand();
             if (!(terrain == "Sand"))
             {
+                
                 terrain = "Sand";
                 for (int i = 0; i < ambienceObjects.Length; i++)
                 {
@@ -204,8 +209,15 @@ public class Player : MonoBehaviour {
              
 
         }
-    
 
+    void CheckLand() {
+        if (!grounded && source.clip.name == "Jump")
+        {
+            source.clip = land;
+            source.pitch = Random.Range(0.9f, 1.05f);
+            source.Play();
+        }
+    }
     void OnTriggerEnter(Collider other)
     {
         print("Entered");

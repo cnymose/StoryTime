@@ -49,11 +49,11 @@ public class CamScript : MonoBehaviour
             }
            // if (Mathf.Abs(Input.GetAxis("RotationX")) > xThreshold)
            // {
-                x += Input.GetAxis("RotationX") * xSpeed * 0.02f;
+                x += Input.GetAxis("RotationX") * xSpeed * 0.02f * Time.deltaTime;
           //  }
            // if (Mathf.Abs(Input.GetAxis("RotationY")) > yThreshold)
          //   {
-                y -= Input.GetAxis("RotationY") * ySpeed * 0.02f;
+                y -= Input.GetAxis("RotationY") * ySpeed * 0.02f * Time.deltaTime;
           //  }
 
             y = ClampAngle(y, yMinLimit, yMaxLimit);
