@@ -2,6 +2,9 @@
 using System.Collections;
 
 public class Player : MonoBehaviour {
+    public AudioSource robotMovement;
+   
+    AudioSource source;
     public bool canMove = true;
     Camera cam;
     bool jumped;
@@ -25,12 +28,21 @@ public class Player : MonoBehaviour {
     public GameObject interactText;
     public GameObject interactable;
     public AudioClip interactClip;
-    AudioSource source;
+   
     public float jumpSpeed;
     public bool grounded;
     bool running;
     Animator anim;
-    
+    public AudioSource[] ambienceObjects;
+    public AudioClip[] ambiences;
+    public string terrain;
+    public AudioClip[] fSteps;
+    public AudioClip[] dSteps;
+    public AudioClip[] frSteps;
+    public AudioClip[] drSteps;
+    public AudioClip[] moveSounds;
+    public AudioClip[] runSounds;
+
     // Use this for initialization
     void Start() {
         cam = Camera.main;
@@ -43,6 +55,7 @@ public class Player : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        
         jumped = false;
         running = Running();
       
@@ -109,8 +122,40 @@ public class Player : MonoBehaviour {
       
         
             move.y -= gravity;
-        
-      
+
+        if (input.magnitude > 0.05f && !source.isPlaying && player.isGrounded) {
+            if (!running)
+            {
+                if (terrain == "Grass")
+                {
+                    source.clip = fSteps[(int)Random.Range(0, fSteps.Length)];
+                    source.Play();
+                }
+                else if (terrain == "Sand")
+                {
+                    source.clip = dSteps[(int)Random.Range(0, dSteps.Length)];
+                    source.Play();
+                }
+                robotMovement.clip = moveSounds[(int)Random.Range(0, moveSounds.Length)];
+                robotMovement.Play();
+            }
+           else
+            {
+                if (terrain == "Grass")
+                {
+                    source.clip = frSteps[(int)Random.Range(0, frSteps.Length)];
+                    source.Play();
+                }
+                else if (terrain == "Sand")
+                {
+                    source.clip = drSteps[(int)Random.Range(0, drSteps.Length)];
+                    source.Play();
+                }
+                robotMovement.clip = runSounds[(int)Random.Range(0, runSounds.Length)];
+                robotMovement.Play();
+            }
+           
+        }
         oldInput = input;
         grounded = player.isGrounded;
         anim.SetBool("Running", running);
@@ -130,6 +175,36 @@ public class Player : MonoBehaviour {
         return input;
 
     }
+
+    void OnControllerColliderHit(ControllerColliderHit hit) {
+
+        if (hit.gameObject.tag == "Grass") {
+           
+            if (!(terrain == "Grass")) {
+                terrain = "Grass";
+                for (int i = 0; i < ambienceObjects.Length; i++) {
+                    ambienceObjects[i].clip = ambiences[0];
+                    ambienceObjects[i].Play();
+                }
+            }
+        }
+        else if (hit.gameObject.tag == "Sand") {
+            if (!(terrain == "Sand"))
+            {
+                terrain = "Sand";
+                for (int i = 0; i < ambienceObjects.Length; i++)
+                {
+                    ambienceObjects[i].clip = ambiences[1];
+                    ambienceObjects[i].Play();
+                }
+            }
+        }
+               
+               
+             
+
+        }
+    
 
     void OnTriggerEnter(Collider other)
     {
