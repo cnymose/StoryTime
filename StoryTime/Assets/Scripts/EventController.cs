@@ -17,12 +17,8 @@ public class EventController : MonoBehaviour {
 	void Update () {
 	
 	}
-    IEnumerator Spawns() {
-        for (int i = 0; i < times.Length; i++) {
-            while (!ready[i]) { //If not ready to spawn the next capsule
-                yield return new WaitForSeconds(reCheckTime); //Wait for a set amount of time and check again if ready
-            }
 
-        }
+    public void SpawnNext() {
+        //Set active gameObject from the colliders script position that called this function
     }
 }

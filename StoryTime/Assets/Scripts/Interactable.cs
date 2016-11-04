@@ -7,6 +7,7 @@ public class Interactable : MonoBehaviour {
     public GameObject textObject;
     public AudioClip storySound;
     AudioSource source;
+    public bool hasInteracted = false;
 	// Use this for initialization
 	void Start () {
         source = GetComponent<AudioSource>();
@@ -19,6 +20,7 @@ public class Interactable : MonoBehaviour {
 	}
 
     public void Interact() {
+        hasInteracted = true;
         print("Interacted");
         switch (type) {
             case 0:
