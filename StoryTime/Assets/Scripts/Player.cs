@@ -47,9 +47,11 @@ public class Player : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
+        
         cam = Camera.main;
         player = GetComponent<CharacterController>();
         source = GetComponent<AudioSource>();
+        source.clip = land;
         player.enabled = true;
         anim = GetComponent<Animator>();
        
