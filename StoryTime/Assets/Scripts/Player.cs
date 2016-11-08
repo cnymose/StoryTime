@@ -184,7 +184,7 @@ public class Player : MonoBehaviour {
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit) {
-        
+ 
         if (hit.gameObject.tag == "Grass") {
             CheckLand();
             if (!(terrain == "Grass")) {
@@ -215,6 +215,7 @@ public class Player : MonoBehaviour {
         }
 
     void CheckLand() {
+
         if (!grounded && source.clip.name == "Jump")
         {
             source.clip = land;
@@ -224,8 +225,19 @@ public class Player : MonoBehaviour {
     }
     void OnTriggerEnter(Collider other)
     {
+
         print("Entered");
-        if (other.tag == "Interactable") {
+        if (other.gameObject.tag == "EventTrigger")
+        {
+            EventSpawnTrigger trigger = other.gameObject.GetComponent<EventSpawnTrigger>();
+            if (!trigger.triggered)
+            { //If we haven't triggered this collider before
+                trigger.triggered = true;
+                print("Spawned an Event");
+                trigger.Spawn();
+            }
+        }
+        else if (other.tag == "Interactable") {
             
             bButton.SetActive(true);
             interactText.SetActive(true);

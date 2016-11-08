@@ -2,15 +2,14 @@
 using System.Collections;
 
 public class EventController : MonoBehaviour {
-    bool[] positionsUsed; //Possible spawn locations used (Follows Vector3[] positions)
-    public Vector3 positions; //Possible spawn locations
-    public GameObject[][] events; //2-dimensional array of event GameObjects (2-3xX)
-    public float[] times; //Wanted times of spawns / Intervals
-    public bool[] ready; //Follows "times". Is that timestamp ready?
-    public float reCheckTime; //Time to wait if spawn is not ready
+    public int currentEvent = 0;   //Which event number are we currently at in the sequence?
+    public EventSpawnTrigger[] triggers;
 	// Use this for initialization
 	void Start () {
-        StartCoroutine("Spawns");
+        GameObject[] triggerObj = GameObject.FindGameObjectsWithTag("EventTrigger");
+        triggers = MakeTriggerArray(triggerObj);
+       
+    
 	}
 	
 	// Update is called once per frame
@@ -18,7 +17,33 @@ public class EventController : MonoBehaviour {
 	
 	}
 
-    public void SpawnNext() {
-        //Set active gameObject from the colliders script position that called this function
+    public void CleanUp() {
+        currentEvent++;
+        GameObject[] events = GameObject.FindGameObjectsWithTag("Interactable"); //Find all Interactables as they are the "events"
+        for (int i = 0; i < events.Length; i++) {
+            if (events[i].GetComponent<Interactable>().sequence == currentEvent - 1) { //If they are part of the event we just had -
+
+                Destroy(events[i]); //- then Destroy
+            }
+        }
+        for (int j = 0; j < triggers.Length; j++) {
+            if (!triggers[j].doNotSpawn) {
+                triggers[j].triggered = false;
+            }
+        }
     }
+
+    EventSpawnTrigger[] MakeTriggerArray(GameObject[] triggerObj)  
+    {
+        EventSpawnTrigger[] trigArr = new EventSpawnTrigger[triggerObj.Length];
+        print(triggerObj.Length);
+        print(trigArr.Length);
+        for (int i = 0; i < triggerObj.Length; i++)
+        {
+            trigArr[i] = triggerObj[i].GetComponent<EventSpawnTrigger>();
+        }
+        return trigArr;
+    }
+
+    
 }
