@@ -4,6 +4,7 @@ using System.Collections;
 public class EventController : MonoBehaviour {
     public int currentEvent = 0;   //Which event number are we currently at in the sequence?
     public EventSpawnTrigger[] triggers;
+    public GameObject[] events;
 	// Use this for initialization
 	void Start () {
         GameObject[] triggerObj = GameObject.FindGameObjectsWithTag("EventTrigger");
@@ -19,7 +20,7 @@ public class EventController : MonoBehaviour {
 
     public void CleanUp() {
         currentEvent++;
-        GameObject[] events = GameObject.FindGameObjectsWithTag("Interactable"); //Find all Interactables as they are the "events"
+        events = GameObject.FindGameObjectsWithTag("Interactable"); //Find all Interactables as they are the "events"
         for (int i = 0; i < events.Length; i++) {
             if (events[i].GetComponent<Interactable>().sequence == currentEvent - 1) { //If they are part of the event we just had -
 

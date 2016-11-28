@@ -266,7 +266,7 @@ public class Player : MonoBehaviour {
                 trigger.Spawn();
             }
         }
-        else if (other.tag == "Interactable") {
+        else if (other.tag == "Interactable" || other.tag == "Collectible") {
             
             bButton.SetActive(true);
             interactText.SetActive(true);

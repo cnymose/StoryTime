@@ -54,44 +54,54 @@ public class Interactable : MonoBehaviour {
                 hasInteracted = true;
 
                 controller.CleanUp();
-                print("Interacted");
-                switch (type)
-                {
-                    case 0:
-                        holo.PlayMovie();
-                        break;
-                    case 1:
-                        GameObject.Find("Player").GetComponent<Player>().canMove = textObject.activeInHierarchy ? true : false;
-                        textObject.SetActive(!textObject.activeInHierarchy);
-                        /*if (!textObject.activeInHierarchy)
-                        {
-                            textObject.SetActive(true);
-                            GameObject.Find("Player").GetComponent<Player>().canMove = false;
-                           // source.Play();
-                        }
-                        else {
-                          //  source.Stop();
-                            textObject.SetActive(false);
-                            GameObject.Find("Player").GetComponent<Player>().canMove = true;
-                        }*/
-                        break;
-                    case 2:
-                        break;
-                }
+                Interaction();
+                
             }
 
         }
         else {
-            if (collectible) {
+            if (collectible)
+            {
                 player.ExitInteract();
                 player.canMove = true;
                 collectibleBG.SetActive(false);
-                
+
                 tag = " ";
                 GetComponent<Interactable>().enabled = false;
+            }
+            else {
+                Interaction();
             }
         }
         
     
+    }
+
+    void Interaction() {
+
+        print("Interacted");
+        switch (type)
+        {
+            case 0:
+                holo.PlayMovie();
+                break;
+            case 1:
+                GameObject.Find("Player").GetComponent<Player>().canMove = textObject.activeInHierarchy ? true : false;
+                textObject.SetActive(!textObject.activeInHierarchy);
+                /*if (!textObject.activeInHierarchy)
+                {
+                    textObject.SetActive(true);
+                    GameObject.Find("Player").GetComponent<Player>().canMove = false;
+                   // source.Play();
+                }
+                else {
+                  //  source.Stop();
+                    textObject.SetActive(false);
+                    GameObject.Find("Player").GetComponent<Player>().canMove = true;
+                }*/
+                break;
+            case 2:
+                break;
+        }
     }
 }
