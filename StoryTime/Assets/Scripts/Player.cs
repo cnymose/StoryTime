@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Player : MonoBehaviour {
     public AudioSource robotMovement;
-   
+    CameraFilterPack_FX_EarthQuake screenShake;
     AudioSource source;
     public bool canMove = true;
     Camera cam;
@@ -50,7 +50,7 @@ public class Player : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        
+        screenShake = Camera.main.GetComponent<CameraFilterPack_FX_EarthQuake>();
         cam = Camera.main;
         player = GetComponent<CharacterController>();
         source = GetComponent<AudioSource>();
@@ -191,7 +191,7 @@ public class Player : MonoBehaviour {
 
     }
 
-    void OnControllerColliderHit(ControllerColliderHit hit) {
+    void OnControllerColliderHit(ControllerColliderHit hit) { //When the character lands
  
         if (hit.gameObject.tag == "Grass") {
             CheckLand();
@@ -229,7 +229,18 @@ public class Player : MonoBehaviour {
             source.clip = land;
             source.pitch = Random.Range(0.9f, 1.05f);
             source.Play();
+            StartCoroutine(ScreenShake());
         }
+    }
+
+    IEnumerator ScreenShake() {
+        screenShake.enabled = true;
+        screenShake.Speed = Random.Range(40, 60);
+        screenShake.X = Random.Range(.004f, .01f);
+        screenShake.Y = Random.Range(.004f, .01f);
+        yield return new WaitForSeconds(Random.Range(0.25f, 0.6f));
+        screenShake.enabled = false;
+        yield break;
     }
     void OnTriggerEnter(Collider other)
     {
