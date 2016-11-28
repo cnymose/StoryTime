@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using UnityEngine.UI;
 public class Player : MonoBehaviour {
+    public int collectibles = 0;
+    public UnityEngine.UI.Image collectibleImage;
+    public GameObject collectibleBG;
+    UnityEngine.UI.Text collectibleText;
     public AudioSource robotMovement;
     CameraFilterPack_FX_EarthQuake screenShake;
     AudioSource source;
@@ -28,7 +32,7 @@ public class Player : MonoBehaviour {
     public GameObject interactText;
     public GameObject interactable;
     public AudioClip interactClip;
-   
+    
     public float jumpSpeed;
     public bool grounded;
     bool running;
@@ -50,6 +54,12 @@ public class Player : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
+        
+        collectibleImage = GameObject.Find("CollectibleImage").GetComponent<UnityEngine.UI.Image>();
+        collectibleBG = GameObject.Find("CollectibleBG");
+        collectibleBG.SetActive(false);
+        collectibleText = GameObject.Find("CollectibleCounter").GetComponent<UnityEngine.UI.Text>();
+        collectibleText.gameObject.SetActive(false);
         screenShake = Camera.main.GetComponent<CameraFilterPack_FX_EarthQuake>();
         cam = Camera.main;
         player = GetComponent<CharacterController>();
@@ -267,11 +277,15 @@ public class Player : MonoBehaviour {
     {
         if (other.tag == "Interactable")
         {
-            interactText.SetActive(false);
-            bButton.SetActive(false);
-            interactable = null;
+            ExitInteract();
         }
     }
+    public void ExitInteract() {
+        interactText.SetActive(false);
+        bButton.SetActive(false);
+        interactable = null;
+    }
+
     bool Running() {
         return Input.GetButton("Run");
     }
@@ -281,6 +295,21 @@ public class Player : MonoBehaviour {
         menuController.StartDetecting(paused);
         pauseUI.SetActive(!pauseUI.activeInHierarchy);
     }
+    public void UpdateCollectibles() { //Update score in corner of screen.
+        collectibles++;
+        StartCoroutine(CollectibleTick());
+    }
+
+    IEnumerator CollectibleTick() { //Actually updates collectibles score.
+        collectibleText.gameObject.SetActive(true);
+        collectibleText.text = collectibles + "/??";
+        yield return new WaitForSeconds(7.5f);
+        collectibleText.gameObject.SetActive(false);
+        yield break;
+    }
+
+
+
    /* void OnTriggerStay(Collider other) {
         if (other.tag == "Interactable") {
             if (Input.GetButtonDown("Interact")) {

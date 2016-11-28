@@ -77,7 +77,7 @@ public class MenuController : MonoBehaviour {
             yield return new WaitForSeconds(0.016f);
             }
 
-        print("broke");
+        
         yield break;
     }
 }
