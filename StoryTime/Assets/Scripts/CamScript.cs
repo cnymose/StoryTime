@@ -22,6 +22,8 @@ public class CamScript : MonoBehaviour
     public float xThreshold;
     public float yThreshold;
 
+    public int invert = -1;
+
     // Use this for initialization
     void Start()
     {
@@ -53,7 +55,7 @@ public class CamScript : MonoBehaviour
           //  }
            // if (Mathf.Abs(Input.GetAxis("RotationY")) > yThreshold)
          //   {
-                y -= Input.GetAxis("RotationY") * ySpeed * 0.02f * Time.deltaTime;
+                y -= Input.GetAxis("RotationY") * ySpeed * 0.02f * Time.deltaTime * invert;
           //  }
 
             y = ClampAngle(y, yMinLimit, yMaxLimit);
