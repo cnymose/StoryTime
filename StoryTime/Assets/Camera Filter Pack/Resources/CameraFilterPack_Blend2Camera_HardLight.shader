@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 Shader "CameraFilterPack/Blend2Camera_HardLight" { 
 Properties 
@@ -52,16 +52,16 @@ return OUT;
 
 float hardLight( float s, float d )
 {
-	return (s < 0.5) ? 2.0 * s * d : 1.0 - 2.0 * (1.0 - s) * (1.0 - d);
+return (s < 0.5) ? 2.0 * s * d : 1.0 - 2.0 * (1.0 - s) * (1.0 - d);
 }
 
 float3 hardLight( float3 s, float3 d )
 {
-	float3 c;
-	c.x = hardLight(s.x,d.x);
-	c.y = hardLight(s.y,d.y);
-	c.z = hardLight(s.z,d.z);
-	return c;
+float3 c;
+c.x = hardLight(s.x,d.x);
+c.y = hardLight(s.y,d.y);
+c.z = hardLight(s.z,d.z);
+return c;
 }
 float4 frag (v2f i) : COLOR
 {

@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode]
@@ -13,7 +13,6 @@ private Vector4 ScreenResolution;
 private Material SCMaterial;
 [Range(-64f, 64f)]
 public float Value = 32f;
-public static float ChangeValue;
 #endregion
 #region Properties
 Material material
@@ -31,7 +30,6 @@ return SCMaterial;
 #endregion
 void Start ()
 {
-ChangeValue = Value;
 SCShader = Shader.Find("CameraFilterPack/Film_Grain");
 if(!SystemInfo.supportsImageEffects)
 {
@@ -39,7 +37,6 @@ enabled = false;
 return;
 }
 }
-
 void OnRenderImage (RenderTexture sourceTexture, RenderTexture destTexture)
 {
 if(SCShader != null)
@@ -56,16 +53,8 @@ else
 Graphics.Blit(sourceTexture, destTexture);
 }
 }
-void OnValidate()
-{
-	ChangeValue=Value;
-}
 void Update ()
 {
-if (Application.isPlaying)
-{
-Value = ChangeValue;
-}
 #if UNITY_EDITOR
 if (Application.isPlaying!=true)
 {

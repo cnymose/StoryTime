@@ -1,6 +1,7 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
+
 using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode]
@@ -17,8 +18,7 @@ public class CameraFilterPack_Blend2Camera_LighterColor : MonoBehaviour {
 	public float SwitchCameraToCamera2 = 0f;
 	[Range(0f, 1f)]
 	public float BlendFX = 0.5f;
-	public static float ChangeValue;
-	public static float ChangeValue2;
+
 	private RenderTexture Camera2tex;
 	#endregion
 	#region Properties
@@ -39,13 +39,12 @@ public class CameraFilterPack_Blend2Camera_LighterColor : MonoBehaviour {
 	{
 		
 		if (Camera2 !=null)
-		{DestroyImmediate(Camera2.targetTexture);
+		{
 			Camera2tex=new RenderTexture(Screen.width,Screen.height, 24); 
 			Camera2.targetTexture=Camera2tex;
 		}
 		
-		ChangeValue = BlendFX;
-		ChangeValue2=SwitchCameraToCamera2;
+		
 		SCShader = Shader.Find(ShaderName);
 		if(!SystemInfo.supportsImageEffects)
 		{
@@ -76,20 +75,15 @@ public class CameraFilterPack_Blend2Camera_LighterColor : MonoBehaviour {
 	{	
 		if (Camera2 != null) 
 		{
-			DestroyImmediate(Camera2.targetTexture);
+			
 			Camera2tex=new RenderTexture(Screen.width,Screen.height, 24); 
 			Camera2.targetTexture = Camera2tex;
 		}
-		ChangeValue=BlendFX;
-		ChangeValue2=SwitchCameraToCamera2;
+		
 	}
 	void Update ()
 	{
-		if (Application.isPlaying)
-		{
-			BlendFX = ChangeValue;
-			SwitchCameraToCamera2 = ChangeValue2;
-		}
+		
 		#if UNITY_EDITOR
 		if (Application.isPlaying!=true)
 		{
@@ -100,7 +94,7 @@ public class CameraFilterPack_Blend2Camera_LighterColor : MonoBehaviour {
 	void OnEnable ()
 	{
 		if (Camera2 !=null)
-		{DestroyImmediate(Camera2.targetTexture);
+		{
 			Camera2tex=new RenderTexture(Screen.width,Screen.height, 24); 
 			Camera2.targetTexture=Camera2tex;
 		}
@@ -109,7 +103,7 @@ public class CameraFilterPack_Blend2Camera_LighterColor : MonoBehaviour {
 	void OnDisable ()
 	{
 		
-		if (Camera2 !=null) { DestroyImmediate(Camera2.targetTexture); Camera2.targetTexture=null; }
+		if (Camera2 !=null) {  Camera2.targetTexture=null; }
 		
 		if(SCMaterial)
 		{

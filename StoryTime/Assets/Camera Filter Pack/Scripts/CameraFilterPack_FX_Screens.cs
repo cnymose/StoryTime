@@ -1,6 +1,7 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
+
 using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode]
@@ -19,10 +20,7 @@ public float Speed = 0.25f;
 public float PosX = 0f;
 [Range(-1f, 1f)]
 public float PosY = 0f;
-public static float ChangeValue;
-public static float ChangeValue2;
-public static float ChangeValue3;
-public static float ChangeValue4;
+
 #endregion
 #region Properties
 Material material
@@ -40,10 +38,7 @@ return SCMaterial;
 #endregion
 void Start ()
 {
-ChangeValue = Tiles;
-ChangeValue2 = Speed;
-ChangeValue3 = PosX;
-ChangeValue4 = PosY;
+
 SCShader = Shader.Find("CameraFilterPack/FX_Screens");
 if(!SystemInfo.supportsImageEffects)
 {
@@ -71,22 +66,10 @@ else
 Graphics.Blit(sourceTexture, destTexture);
 }
 }
-void OnValidate()
-{
-		ChangeValue=Tiles;
-		ChangeValue2=Speed;
-		ChangeValue3=PosX;
-		ChangeValue4=PosY;
-}
+
 void Update ()
 {
-if (Application.isPlaying)
-{
-Tiles = ChangeValue;
-Speed = ChangeValue2;
-PosX = ChangeValue3;
-PosY = ChangeValue4;
-}
+
 #if UNITY_EDITOR
 if (Application.isPlaying!=true)
 {

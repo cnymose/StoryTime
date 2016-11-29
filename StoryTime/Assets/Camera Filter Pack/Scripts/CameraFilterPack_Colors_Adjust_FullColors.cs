@@ -1,6 +1,7 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
+
 using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode]
@@ -55,7 +56,7 @@ return SCMaterial;
 void Start ()
 {
 
-		SCShader = Shader.Find("CameraFilterPack/Colors_Adjust_FullColors");
+SCShader = Shader.Find("CameraFilterPack/Colors_Adjust_FullColors");
 if(!SystemInfo.supportsImageEffects)
 {
 enabled = false;
@@ -70,18 +71,18 @@ if(SCShader != null)
 TimeX+=Time.deltaTime;
 if (TimeX>100)  TimeX=0;
 material.SetFloat("_TimeX", TimeX);
-			material.SetFloat("_Red_R", Red_R/100);
-			material.SetFloat("_Red_G", Red_G/100);
-			material.SetFloat("_Red_B", Red_B/100);
-			material.SetFloat("_Green_R", Green_R/100);
-			material.SetFloat("_Green_G", Green_G/100);
-			material.SetFloat("_Green_B", Green_B/100);
-			material.SetFloat("_Blue_R", Blue_R/100);
-			material.SetFloat("_Blue_G", Blue_G/100);
-			material.SetFloat("_Blue_B", Blue_B/100);
-			material.SetFloat("_Red_C", Red_Constant/100);
-			material.SetFloat("_Green_C", Green_Constant/100);
-			material.SetFloat("_Blue_C", Blue_Constant/100);
+material.SetFloat("_Red_R", Red_R/100);
+material.SetFloat("_Red_G", Red_G/100);
+material.SetFloat("_Red_B", Red_B/100);
+material.SetFloat("_Green_R", Green_R/100);
+material.SetFloat("_Green_G", Green_G/100);
+material.SetFloat("_Green_B", Green_B/100);
+material.SetFloat("_Blue_R", Blue_R/100);
+material.SetFloat("_Blue_G", Blue_G/100);
+material.SetFloat("_Blue_B", Blue_B/100);
+material.SetFloat("_Red_C", Red_Constant/100);
+material.SetFloat("_Green_C", Green_Constant/100);
+material.SetFloat("_Blue_C", Blue_Constant/100);
 material.SetVector("_ScreenResolution",new Vector4(sourceTexture.width,sourceTexture.height,0.0f,0.0f));
 Graphics.Blit(sourceTexture, destTexture, material);
 }
@@ -100,7 +101,7 @@ if (Application.isPlaying)
 #if UNITY_EDITOR
 if (Application.isPlaying!=true)
 {
-	SCShader = Shader.Find("CameraFilterPack/Colors_Adjust_FullColors");
+SCShader = Shader.Find("CameraFilterPack/Colors_Adjust_FullColors");
 }
 #endif
 }

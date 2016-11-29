@@ -1,6 +1,7 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
+
 using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode]
@@ -19,10 +20,7 @@ public float Green = 0f;
 public float Blue = 0f;
 [Range(-1f, 1f)]
 public float Brightness = 0f;
-public static float ChangeValue;
-public static float ChangeValue2;
-public static float ChangeValue3;
-public static float ChangeValue4;
+
 #endregion
 #region Properties
 Material material
@@ -40,11 +38,8 @@ return SCMaterial;
 #endregion
 void Start ()
 {
-ChangeValue = Red;
-ChangeValue2 = Green;
-ChangeValue3 = Blue;
-ChangeValue4 = Brightness;
-		SCShader = Shader.Find("CameraFilterPack/Colors_Adjust_ColorRGB");
+
+SCShader = Shader.Find("CameraFilterPack/Colors_Adjust_ColorRGB");
 if(!SystemInfo.supportsImageEffects)
 {
 enabled = false;
@@ -71,19 +66,13 @@ else
 Graphics.Blit(sourceTexture, destTexture);
 }
 }
-void OnValidate(){ChangeValue=Red;ChangeValue2=Green;ChangeValue3=Blue;ChangeValue4=Brightness;}void Update ()
+
+void Update ()
 {
-if (Application.isPlaying)
-{
-Red = ChangeValue;
-Green = ChangeValue2;
-Blue = ChangeValue3;
-Brightness = ChangeValue4;
-}
 #if UNITY_EDITOR
 if (Application.isPlaying!=true)
 {
-			SCShader = Shader.Find("CameraFilterPack/Colors_Adjust_ColorRGB");
+SCShader = Shader.Find("CameraFilterPack/Colors_Adjust_ColorRGB");
 }
 #endif
 }

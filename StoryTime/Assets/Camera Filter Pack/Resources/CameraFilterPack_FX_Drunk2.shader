@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 
 Shader "CameraFilterPack/FX_Drunk2" { 
@@ -47,15 +47,15 @@ return OUT;
 }
 float4 frag (v2f i) : COLOR
 {
-	float2 uv = i.texcoord.xy;
-    float sq = sin(_TimeX ) * 0.05;    
-    float4 tc = tex2D(_MainTex,uv);    
-    float4 tl = tex2D(_MainTex,uv - float2(sin(sq),0.));    
-    float4 tR = tex2D(_MainTex,uv + float2(sin(sq),0.));    
-    float4 tD = tex2D(_MainTex,uv - float2(0.,sin(sq)));    
-    float4 tU = tex2D(_MainTex,uv + float2(0.,sin(sq)));        
-    float4 compo = (tc + tl + tR + tD + tU)/5.;
-	return  compo;
+float2 uv = i.texcoord.xy;
+float sq = sin(_TimeX ) * 0.05;    
+float4 tc = tex2D(_MainTex,uv);    
+float4 tl = tex2D(_MainTex,uv - float2(sin(sq),0.));    
+float4 tR = tex2D(_MainTex,uv + float2(sin(sq),0.));    
+float4 tD = tex2D(_MainTex,uv - float2(0.,sin(sq)));    
+float4 tU = tex2D(_MainTex,uv + float2(0.,sin(sq)));        
+float4 compo = (tc + tl + tR + tD + tU)/5.;
+return  compo;
 }
 ENDCG
 }

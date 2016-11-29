@@ -1,6 +1,7 @@
 ///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
+//  CameraFilterPack - by VETASOFT 2016 ///
 ///////////////////////////////////////////
+
 using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode]
@@ -19,10 +20,7 @@ public float HoleSmooth = 0.3f;
 public float Color1 = 0.2f;
 [Range(-2f, 2f)]
 public float Color2 = 0.9f;
-public static float ChangeValue;
-public static float ChangeValue2;
-public static float ChangeValue3;
-public static float ChangeValue4;
+
 #endregion
 #region Properties
 Material material
@@ -40,10 +38,7 @@ return SCMaterial;
 #endregion
 void Start ()
 {
-ChangeValue = HoleSize;
-ChangeValue2 = HoleSmooth;
-ChangeValue3 = Color1;
-ChangeValue4 = Color2;
+
 SCShader = Shader.Find("CameraFilterPack/Vision_Blood");
 if(!SystemInfo.supportsImageEffects)
 {
@@ -72,23 +67,10 @@ Graphics.Blit(sourceTexture, destTexture);
 }
 }
 
-void OnValidate()
-{
-		ChangeValue=HoleSize;
-		ChangeValue2=HoleSmooth;
-		ChangeValue3=Color1;
-		ChangeValue4=Color2;
-	
-}
+
 void Update ()
 {
-if (Application.isPlaying)
-{
-HoleSize = ChangeValue;
-HoleSmooth = ChangeValue2;
-Color1 = ChangeValue3;
-Color2 = ChangeValue4;
-}
+
 #if UNITY_EDITOR
 if (Application.isPlaying!=true)
 {

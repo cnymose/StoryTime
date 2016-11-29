@@ -1,6 +1,7 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
+
 using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode]
@@ -15,14 +16,11 @@ private Material SCMaterial;
 public float Threshold = 1f;
 [Range(8f, 256f)]
 public float Size = 64f;
-[Range(0f, 10f)]
-private float Value3 = 1f;
-[Range(0f, 10f)]
-private float Value4 = 1f;
-public static float ChangeValue;
-public static float ChangeValue2;
-public static float ChangeValue3;
-public static float ChangeValue4;
+[Range(-0.5f, 0.5f)]
+public float DirectionX = 0f;
+[Range(0f, 1f)]
+public float Fade = 1f;
+
 #endregion
 #region Properties
 Material material
@@ -40,10 +38,7 @@ return SCMaterial;
 #endregion
 void Start ()
 {
-ChangeValue = Threshold;
-ChangeValue2 = Size;
-ChangeValue3 = Value3;
-ChangeValue4 = Value4;
+
 SCShader = Shader.Find("CameraFilterPack/Atmosphere_Snow_8bits");
 if(!SystemInfo.supportsImageEffects)
 {
@@ -61,8 +56,8 @@ if (TimeX>100)  TimeX=0;
 material.SetFloat("_TimeX", TimeX);
 material.SetFloat("_Value", Threshold);
 material.SetFloat("_Value2", Size);
-material.SetFloat("_Value3", Value3);
-material.SetFloat("_Value4", Value4);
+material.SetFloat("_Value3", DirectionX);
+material.SetFloat("_Value4", Fade);
 material.SetVector("_ScreenResolution",new Vector4(sourceTexture.width,sourceTexture.height,0.0f,0.0f));
 Graphics.Blit(sourceTexture, destTexture, material);
 }
@@ -71,22 +66,10 @@ else
 Graphics.Blit(sourceTexture, destTexture);
 }
 }
-void OnValidate()
-{
-		ChangeValue=Threshold;
-		ChangeValue2=Size;
-		ChangeValue3=Value3;
-		ChangeValue4=Value4;
-}
+
 void Update ()
 {
-if (Application.isPlaying)
-{
-Threshold = ChangeValue;
-Size = ChangeValue2;
-Value3 = ChangeValue3;
-Value4 = ChangeValue4;
-}
+
 #if UNITY_EDITOR
 if (Application.isPlaying!=true)
 {

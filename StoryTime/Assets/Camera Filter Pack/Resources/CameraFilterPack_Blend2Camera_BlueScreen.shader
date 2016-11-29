@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 Shader "CameraFilterPack/Blend2Camera_BlueScreen" { 
 Properties 
@@ -56,31 +56,19 @@ OUT.color = IN.color;
 return OUT;
 }
 
-float4 greenscreen( float3 s, float3 d )
+float4 bluescreen( float3 s, float3 d )
 {
 
-
- // float maxrb = max( d.r, d.b );
- // float k = clamp((d.g-maxrb-_Value3)*(5.0), 0.0, 1.0 );
- // float ll = length(d);
- // d.g = min( d.g, (maxrb+0.0001+_Value2 )*(0.8));
- // d = ll*normalize(d);
- // d.r+=_Value5;
- // d.b+=_Value6;
- // d.g+=_Value7;
- // float3 result=lerp(d, s, k);
- 
-    
-    float maxrb = max( d.r, d.g );
-    float k = clamp( (d.b-maxrb-_Value3)*3.0, 0.0, 1.0 );
-    float dg = d.b; 
-    d.b = min( d.b-_Value2, maxrb*0.8 ); 
-    d += dg - d.b-_Value4;
-    d.r+=_Value5;
-    d.b+=_Value6;
-    d.g+=_Value7;
-    float3 result = lerp(d, s, k);
- return  float4( result, 1.0 );
+float maxrb = max( d.r, d.g );
+float k = clamp( (d.b-maxrb-_Value3)*3.0, 0.0, 1.0 );
+float dg = d.b; 
+d.b = min( d.b-_Value2, maxrb*0.8 ); 
+d += dg - d.b-_Value4;
+d.r+=_Value5;
+d.b+=_Value6;
+d.g+=_Value7;
+float3 result = lerp(d, s, k);
+return  float4( result, 1.0 );
 }
 
 float4 frag (v2f i) : COLOR
@@ -92,7 +80,7 @@ if (_MainTex_TexelSize.y < 0)
 uv.y = 1-uv.y;
 #endif
 float4 tex2 = tex2D(_MainTex2,uv);
-tex=lerp(tex,greenscreen(tex,tex2),_Value);
+tex=lerp(tex, bluescreen(tex,tex2),_Value);
 return  float4(tex.rgb,1.0);
 }
 ENDCG

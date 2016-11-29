@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 
 Shader "CameraFilterPack/Colors_Adjust_FullColors" { 
@@ -61,16 +61,16 @@ return OUT;
 }
 float4 frag (v2f i) : COLOR
 {
-  float2 uv = i.texcoord.xy ;
-	
-	float4 col = tex2D( _MainTex, uv );
-	float3 c_r = float3(_Red_R,_Red_G,_Red_B);
-	float3 c_g = float3(_Green_R,_Green_G,_Green_B);
-	float3 c_b = float3(_Blue_R,_Blue_G,_Blue_B);
-	float3 rgb = float3( dot(col.rgb,c_r)+_Red_C, dot(col.rgb,c_g)+_Green_C, dot(col.rgb,c_b)+_Blue_C );
+float2 uv = i.texcoord.xy ;
+
+float4 col = tex2D( _MainTex, uv );
+float3 c_r = float3(_Red_R,_Red_G,_Red_B);
+float3 c_g = float3(_Green_R,_Green_G,_Green_B);
+float3 c_b = float3(_Blue_R,_Blue_G,_Blue_B);
+float3 rgb = float3( dot(col.rgb,c_r)+_Red_C, dot(col.rgb,c_g)+_Green_C, dot(col.rgb,c_b)+_Blue_C );
 
 
-	return  float4( rgb, 1 );
+return  float4( rgb, 1 );
 }
 ENDCG
 }

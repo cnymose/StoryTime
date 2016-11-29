@@ -1,6 +1,7 @@
 ///////////////////////////////////////////
-//  CameraFilterPack - by VETASOFT 2015 ///
+//  CameraFilterPack - by VETASOFT 2016 ///
 ///////////////////////////////////////////
+
 using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode]
@@ -13,7 +14,6 @@ private Vector4 ScreenResolution;
 private Material SCMaterial;
 [Range(0f, 2f)]
 public float Tracking = 1f;
-	public static float ChangeTracking;
 
 #endregion
 #region Properties
@@ -32,7 +32,6 @@ return SCMaterial;
 #endregion
 void Start ()
 {
-		ChangeTracking = Tracking;
 
 SCShader = Shader.Find("CameraFilterPack/VHS_Tracking");
 if(!SystemInfo.supportsImageEffects)
@@ -59,13 +58,9 @@ else
 Graphics.Blit(sourceTexture, destTexture);
 }
 }
-	void OnValidate(){ChangeTracking=Tracking;}void Update ()
+void Update ()
 {
-if (Application.isPlaying)
-{
-			Tracking = ChangeTracking;
 
-}
 #if UNITY_EDITOR
 if (Application.isPlaying!=true)
 {

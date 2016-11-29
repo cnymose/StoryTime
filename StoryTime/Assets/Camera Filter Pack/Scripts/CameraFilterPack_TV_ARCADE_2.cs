@@ -1,5 +1,5 @@
 ///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
+//  CameraFilterPack - by VETASOFT 2016 ///
 ///////////////////////////////////////////
 using UnityEngine;
 using System.Collections;
@@ -19,10 +19,6 @@ public float Interferance_Speed = 0.5f;
 public float Contrast = 1f;
 [Range(0f, 10f)]
 private float Value4 = 1f;
-public static float ChangeValue;
-public static float ChangeValue2;
-public static float ChangeValue3;
-public static float ChangeValue4;
 #endregion
 #region Properties
 Material material
@@ -40,10 +36,6 @@ return SCMaterial;
 #endregion
 void Start ()
 {
-ChangeValue = Interferance_Size;
-ChangeValue2 = Interferance_Speed;
-ChangeValue3 = Contrast;
-ChangeValue4 = Value4;
 SCShader = Shader.Find("CameraFilterPack/TV_ARCADE_2");
 if(!SystemInfo.supportsImageEffects)
 {
@@ -51,7 +43,6 @@ enabled = false;
 return;
 }
 }
-
 void OnRenderImage (RenderTexture sourceTexture, RenderTexture destTexture)
 {
 if(SCShader != null)
@@ -71,23 +62,8 @@ else
 Graphics.Blit(sourceTexture, destTexture);
 }
 }
-	void OnValidate()
-{
-		ChangeValue=Interferance_Size;
-		ChangeValue2=Interferance_Speed;
-		ChangeValue3=Contrast;
-		ChangeValue4=Value4;
-		
-}
 void Update ()
 {
-if (Application.isPlaying)
-{
-Interferance_Size = ChangeValue;
-Interferance_Speed = ChangeValue2;
-Contrast = ChangeValue3;
-Value4 = ChangeValue4;
-}
 #if UNITY_EDITOR
 if (Application.isPlaying!=true)
 {

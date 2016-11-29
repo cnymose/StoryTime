@@ -1,7 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
-
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 Shader "CameraFilterPack/Colors_Adjust_ColorRGB" { 
 Properties 
@@ -51,13 +50,13 @@ return OUT;
 }
 float4 frag (v2f i) : COLOR
 {
-	float4 compo = tex2D(_MainTex,i.texcoord.xy);
-	compo.r+=_Value;
-	compo.g+=_Value2;
-	compo.b+=_Value3;
-	compo.rgb+=_Value4;
-	
-	return  compo;
+float4 compo = tex2D(_MainTex,i.texcoord.xy);
+compo.r+=_Value;
+compo.g+=_Value2;
+compo.b+=_Value3;
+compo.rgb+=_Value4;
+
+return  compo;
 }
 ENDCG
 }

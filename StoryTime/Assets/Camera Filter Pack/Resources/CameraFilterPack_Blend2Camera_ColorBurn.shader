@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 Shader "CameraFilterPack/Blend2Camera_ColorBurn" { 
 Properties 
@@ -52,7 +52,7 @@ return OUT;
 
 float3 colorBurn( float3 s, float3 d )
 {
-	return 1.0 - (1.0 - d) / s;
+return 1.0 - (1.0 - d) / s;
 }
 
 float4 frag (v2f i) : COLOR

@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 Shader "CameraFilterPack/Blend2Camera_Screen" { 
 Properties 
@@ -52,7 +52,7 @@ return OUT;
 
 float3 screen( float3 s, float3 d )
 {
-	return s + d - s * d;
+return s + d - s * d;
 }
 
 

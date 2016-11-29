@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 Shader "CameraFilterPack/Blend2Camera_Luminosity" { 
 Properties 
@@ -51,15 +51,15 @@ return OUT;
 }
 float3 luminosity( float3 s, float3 d )
 {
-	float dLum = dot(d, float3(0.3, 0.59, 0.11));
-	float sLum = dot(s, float3(0.3, 0.59, 0.11));
-	float lum = sLum - dLum;
-	float3 c = d + lum;
-	float minC = min(min(c.x, c.y), c.z);
-	float maxC = max(max(c.x, c.y), c.z);
-	if(minC < 0.0) return sLum + ((c - sLum) * sLum) / (sLum - minC);
-	else if(maxC > 1.0) return sLum + ((c - sLum) * (1.0 - sLum)) / (maxC - sLum);
-	else return c;
+float dLum = dot(d, float3(0.3, 0.59, 0.11));
+float sLum = dot(s, float3(0.3, 0.59, 0.11));
+float lum = sLum - dLum;
+float3 c = d + lum;
+float minC = min(min(c.x, c.y), c.z);
+float maxC = max(max(c.x, c.y), c.z);
+if(minC < 0.0) return sLum + ((c - sLum) * sLum) / (sLum - minC);
+else if(maxC > 1.0) return sLum + ((c - sLum) * (1.0 - sLum)) / (maxC - sLum);
+else return c;
 }
 
 float4 frag (v2f i) : COLOR

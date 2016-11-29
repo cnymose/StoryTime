@@ -1,6 +1,7 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
+
 using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode]
@@ -11,10 +12,10 @@ public Shader SCShader;
 private float TimeX = 1.0f;
 private Vector4 ScreenResolution;
 private Material SCMaterial;
-[Range(0, 20)]
-private float Value = 6.0f;
-public static float ChangeValue;
+[Range(0, 1)]
+public float Glitch = 1.0f;
 #endregion
+
 #region Properties
 Material material
 {
@@ -31,7 +32,6 @@ return SCMaterial;
 #endregion
 void Start ()
 {
-ChangeValue = Value;
 SCShader = Shader.Find("CameraFilterPack/FX_Glitch1");
 if(!SystemInfo.supportsImageEffects)
 {
@@ -39,7 +39,6 @@ enabled = false;
 return;
 }
 }
-
 void OnRenderImage (RenderTexture sourceTexture, RenderTexture destTexture)
 {
 if(SCShader != null)
@@ -47,7 +46,7 @@ if(SCShader != null)
 TimeX+=Time.deltaTime;
 if (TimeX>100)  TimeX=0;
 material.SetFloat("_TimeX", TimeX);
-material.SetFloat("_Value", Value);
+material.SetFloat("_Glitch", Glitch);
 material.SetVector("_ScreenResolution",new Vector4(sourceTexture.width,sourceTexture.height,0.0f,0.0f));
 Graphics.Blit(sourceTexture, destTexture, material);
 }
@@ -56,17 +55,8 @@ else
 Graphics.Blit(sourceTexture, destTexture);
 }
 }
-void OnValidate()
-{
-		ChangeValue=Value;
-	
-}
 void Update ()
 {
-if (Application.isPlaying)
-{
-Value = ChangeValue;
-}
 #if UNITY_EDITOR
 if (Application.isPlaying!=true)
 {

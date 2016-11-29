@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 
 Shader "CameraFilterPack/TV_Tiles" { 
@@ -51,31 +51,31 @@ return OUT;
 }
 float4 frag (v2f i) : COLOR
 {
-    float2 pos = 256.0*i.texcoord.xy/1.0 + _TimeX;
-  	float4 txt = tex2D(_MainTex,i.texcoord);
-    float dist2 = 1.0 - smoothstep(_Value3,_Value3-_Value4, length(float2(0.5,0.5) - i.texcoord));
- 
-    float3 col = float3(0.0,0.0,0.0);
-    for( int i=0; i<6; i++ ) 
-    {
-        float2 a = floor(pos);
-        float2 b = frac(pos);
-        
-        float4 w = frac((sin(a.x*7.0+31.0*a.y + 0.01*_TimeX)+float4(0.035,0.01,0.0,0.7))*13.545317); // randoms
-                
-        col += w.xyz *                                   // color
-               smoothstep(0.45,0.55,w.w) *               // intensity
-               sqrt( 16.0*b.x*b.y*(1.0-b.x)*(1.0-b.y) ); // pattern
-        
-        pos /= 2.0*_Value; // lacunarity
-        
-		col /= 2.0; // attenuate high frequencies
-    }
-    
-    col = pow( 2.5*col, float3(1.0,1.0,0.7) );    // contrast and color shape
-    col =txt *(col*_Value2);
-    float3 ret=lerp(txt.rgb,col,dist2);
-    return  float4( ret, 1.0 );
+float2 pos = 256.0*i.texcoord.xy/1.0 + _TimeX;
+float4 txt = tex2D(_MainTex,i.texcoord);
+float dist2 = 1.0 - smoothstep(_Value3,_Value3-_Value4, length(float2(0.5,0.5) - i.texcoord));
+
+float3 col = float3(0.0,0.0,0.0);
+for( int i=0; i<6; i++ ) 
+{
+float2 a = floor(pos);
+float2 b = frac(pos);
+
+float4 w = frac((sin(a.x*7.0+31.0*a.y + 0.01*_TimeX)+float4(0.035,0.01,0.0,0.7))*13.545317); // randoms
+
+col += w.xyz *                                   // color
+smoothstep(0.45,0.55,w.w) *               // intensity
+sqrt( 16.0*b.x*b.y*(1.0-b.x)*(1.0-b.y) ); // pattern
+
+pos /= 2.0*_Value; // lacunarity
+
+col /= 2.0; // attenuate high frequencies
+}
+
+col = pow( 2.5*col, float3(1.0,1.0,0.7) );    // contrast and color shape
+col =txt *(col*_Value2);
+float3 ret=lerp(txt.rgb,col,dist2);
+return  float4( ret, 1.0 );
 }
 ENDCG
 }

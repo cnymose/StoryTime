@@ -1,7 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
-
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 Shader "CameraFilterPack/Colors_DarkColor" { 
 Properties 
@@ -48,12 +47,12 @@ return OUT;
 }
 float4 frag (v2f i) : COLOR
 {
-    float2 uv = i.texcoord.xy;
-    float3 col = tex2D(_MainTex, uv).xyz;
-    float3 col2 = col;
-    col *= (col.x+col.y+col.z); 
-    col=lerp(col2,col,_Value);
-    return  float4(col, 1.0);
+float2 uv = i.texcoord.xy;
+float3 col = tex2D(_MainTex, uv).xyz;
+float3 col2 = col;
+col *= (col.x+col.y+col.z); 
+col=lerp(col2,col,_Value);
+return  float4(col, 1.0);
 }
 ENDCG
 }

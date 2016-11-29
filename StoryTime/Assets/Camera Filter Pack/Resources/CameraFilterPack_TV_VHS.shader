@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 
 Shader "CameraFilterPack/TV_VHS" { 
@@ -51,19 +51,21 @@ return OUT;
 }
 inline float mod(float x,float modu) 
 {
-  return x - floor(x * (1.0 / modu)) * modu;
+return x - floor(x * (1.0 / modu)) * modu;
 } 
 
 float rand(float2 co)
 {
-    return frac(sin(dot(co.xy ,float2(11.9898,75.133))) * 43528.1483);
+return frac(sin(dot(co.xy ,float2(11.9898,75.133))) * 43528.1483);
 }
 
 float4 frag (v2f i) : COLOR
 {
 float4 text= float4(0,0,0,0);
 float2 uv = i.texcoord.xy;
-uv.y=1-uv.y;
+#if UNITY_UV_STARTS_AT_TOP
+uv.y = 1-uv.y;
+#endif 
 float parasite = 98765;
 uv.y = mod(uv.y + _TimeX*_Value3, 1.0);
 uv.x = uv.x+(rand(float2(_TimeX,i.texcoord.y))-0.5)/_Value;

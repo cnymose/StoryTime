@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 
 Shader "CameraFilterPack/FX_Screens" { 
@@ -51,15 +51,15 @@ return OUT;
 }
 
 inline float modx(float x,float modu) {
-  return x - floor(x * (1.0 / modu)) * modu;
+return x - floor(x * (1.0 / modu)) * modu;
 }  
 
 inline float3 modx(float3 x,float3 modu) {
-  return x - floor(x * (1.0 / modu)) * modu;
+return x - floor(x * (1.0 / modu)) * modu;
 } 
-  
+
 inline float4 modx(float4 x,float4 modu) {
-  return x - floor(x * (1.0 / modu)) * modu;
+return x - floor(x * (1.0 / modu)) * modu;
 } 
 
 

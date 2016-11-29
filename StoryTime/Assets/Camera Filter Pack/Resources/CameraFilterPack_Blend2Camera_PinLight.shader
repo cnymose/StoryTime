@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 Shader "CameraFilterPack/Blend2Camera_PinLight" { 
 Properties 
@@ -51,15 +51,15 @@ return OUT;
 }
 float pinLight( float s, float d )
 {
-	return (2.0 * s - 1.0 > d) ? 2.0 * s - 1.0 : (s < 0.5 * d) ? 2.0 * s : d;
+return (2.0 * s - 1.0 > d) ? 2.0 * s - 1.0 : (s < 0.5 * d) ? 2.0 * s : d;
 }
 float3 pinLight( float3 s, float3 d )
 {
-	float3 c;
-	c.x = pinLight(s.x,d.x);
-	c.y = pinLight(s.y,d.y);
-	c.z = pinLight(s.z,d.z);
-	return c;
+float3 c;
+c.x = pinLight(s.x,d.x);
+c.y = pinLight(s.y,d.y);
+c.z = pinLight(s.z,d.z);
+return c;
 }
 
 float4 frag (v2f i) : COLOR

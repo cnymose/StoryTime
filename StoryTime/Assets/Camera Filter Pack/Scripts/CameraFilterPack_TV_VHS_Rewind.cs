@@ -1,6 +1,7 @@
 ///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
+//  CameraFilterPack - by VETASOFT 2016 ///
 ///////////////////////////////////////////
+
 using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode]
@@ -19,10 +20,7 @@ public float Parasite = 9f;
 public float Parasite2 = 12f;
 [Range(0f, 1f)]
 private float WhiteParasite = 1f;
-public static float ChangeValue;
-public static float ChangeValue2;
-public static float ChangeValue3;
-public static float ChangeValue4;
+
 #endregion
 #region Properties
 Material material
@@ -40,10 +38,7 @@ return SCMaterial;
 #endregion
 void Start ()
 {
-ChangeValue = Cryptage;
-ChangeValue2 = Parasite;
-ChangeValue3 = Parasite2;
-ChangeValue4 = WhiteParasite;
+
 SCShader = Shader.Find("CameraFilterPack/TV_VHS_Rewind");
 if(!SystemInfo.supportsImageEffects)
 {
@@ -71,15 +66,9 @@ else
 Graphics.Blit(sourceTexture, destTexture);
 }
 }
-void OnValidate(){ChangeValue=Cryptage;ChangeValue2=Parasite;ChangeValue3=Parasite2;ChangeValue4=WhiteParasite;}void Update ()
+void Update ()
 {
-if (Application.isPlaying)
-{
-Cryptage = ChangeValue;
-Parasite = ChangeValue2;
-Parasite2 = ChangeValue3;
-WhiteParasite = ChangeValue4;
-}
+
 #if UNITY_EDITOR
 if (Application.isPlaying!=true)
 {

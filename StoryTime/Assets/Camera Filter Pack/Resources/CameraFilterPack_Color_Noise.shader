@@ -1,4 +1,6 @@
-﻿// Camera Filter Pack - (c)VETASOFT 2014
+﻿////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 Shader "CameraFilterPack/Color_Noise" {
 	Properties 
 	{

@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 
 Shader "CameraFilterPack/Oculus_ThermaVision" { 
@@ -48,18 +48,18 @@ return OUT;
 }
 float4 frag (v2f i) : COLOR
 {
- float4 pixcol = tex2D(_MainTex, i.texcoord.xy);
- float4 colors[3];
- colors[0] = float4(0.,0.,1.,1.);
- colors[1] = float4(1.,1.,0.,1.);
- colors[2] = float4(1.,0.,0.,1.);
- float lum = (pixcol.r+pixcol.g+pixcol.b)/3.;
+float4 pixcol = tex2D(_MainTex, i.texcoord.xy);
+float4 colors[3];
+colors[0] = float4(0.,0.,1.,1.);
+colors[1] = float4(1.,1.,0.,1.);
+colors[2] = float4(1.,0.,0.,1.);
+float lum = (pixcol.r+pixcol.g+pixcol.b)/3.;
 float4 thermal;
- if (lum<_Value) thermal = lerp(colors[0],colors[2],(lum-float(0)*_Value)/_Value);
- if (lum>=_Value) thermal = lerp(colors[1],colors[2],(lum-float(1)*_Value)/_Value);
+if (lum<_Value) thermal = lerp(colors[0],colors[2],(lum-float(0)*_Value)/_Value);
+if (lum>=_Value) thermal = lerp(colors[1],colors[2],(lum-float(1)*_Value)/_Value);
 
 
- return  thermal;
+return  thermal;
 }
 ENDCG
 }

@@ -1,6 +1,7 @@
-///////////////////////////////////////////
-//  CameraFilterPack - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
+
 using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode]
@@ -20,11 +21,6 @@ private float Value3 = 1f;
 [Range(0f, 10f)]
 private float Value4 = 1f;
 
-float deltaTime = 0.0f;
-public static float ChangeValue;
-public static int ChangeValue2;
-public static float ChangeValue3;
-public static float ChangeValue4;
 #endregion
 #region Properties
 Material material
@@ -43,11 +39,8 @@ return SCMaterial;
 void Start ()
 {
 FPS = 0;
-StartCoroutine( FPSX() );
-ChangeValue = Size;
-ChangeValue2 = FPS;
-ChangeValue3 = Value3;
-ChangeValue4 = Value4;
+StartCoroutine(FPSX());
+
 SCShader = Shader.Find("CameraFilterPack/EXTRA_SHOWFPS");
 if(!SystemInfo.supportsImageEffects)
 {
@@ -75,41 +68,32 @@ else
 Graphics.Blit(sourceTexture, destTexture);
 }
 }
-void OnValidate(){ChangeValue=Size;ChangeValue2=FPS;ChangeValue3=Value3;ChangeValue4=Value4;}
 
-private float accum   = 0f; // FPS accumulated over the interval
-private int   frames  = 0; // Frames drawn over the interval
-	public  float frequency = 0.5F; // The update frequency of the fps
+private float accum   = 0f; 
+private int   frames  = 0; 
+public  float frequency = 0.5F;
 
-	IEnumerator FPSX()
-	{
-		while( true )
-		{
-			// Update the FPS
-			float fps = accum/frames;
-			FPS = (int)fps;
-			ChangeValue2=(int)fps;
-			accum = 0.0F;
-			frames = 0;
-			
-			yield return new WaitForSeconds( frequency );
-		}
-	}
+IEnumerator FPSX()
+{
+while( true )
+{
+
+float fps = accum/frames;
+FPS = (int)fps;
+
+accum = 0.0F;
+frames = 0;
+
+yield return new WaitForSeconds( frequency );
+}
+}
 
 void Update ()
 {
 
-		accum += Time.timeScale/ Time.deltaTime;
-		++frames;
+accum += Time.timeScale/ Time.deltaTime;
+++frames;
 
-if (Application.isPlaying)
-{
-Size = ChangeValue;
-FPS = ChangeValue2;
-Value3 = ChangeValue3;
-Value4 = ChangeValue4;
-}
-else FPS = 9999;
 #if UNITY_EDITOR
 if (Application.isPlaying!=true)
 {

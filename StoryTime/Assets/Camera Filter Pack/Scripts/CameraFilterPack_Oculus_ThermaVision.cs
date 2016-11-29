@@ -1,5 +1,5 @@
 ///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
+//  CameraFilterPack - by VETASOFT 2016 ///
 ///////////////////////////////////////////
 using UnityEngine;
 using System.Collections;
@@ -19,10 +19,6 @@ private float Contrast = 3f;
 private float Burn = 0f;
 [Range(0f, 16f)]
 private float SceneCut = 1f;
-public static float ChangeValue;
-public static float ChangeValue2;
-public static float ChangeValue3;
-public static float ChangeValue4;
 #endregion
 #region Properties
 Material material
@@ -40,10 +36,6 @@ return SCMaterial;
 #endregion
 void Start ()
 {
-ChangeValue = Therma_Variation;
-ChangeValue2 = Contrast;
-ChangeValue3 = Burn;
-ChangeValue4 = SceneCut;
 SCShader = Shader.Find("CameraFilterPack/Oculus_ThermaVision");
 if(!SystemInfo.supportsImageEffects)
 {
@@ -51,7 +43,6 @@ enabled = false;
 return;
 }
 }
-
 void OnRenderImage (RenderTexture sourceTexture, RenderTexture destTexture)
 {
 if(SCShader != null)
@@ -71,23 +62,8 @@ else
 Graphics.Blit(sourceTexture, destTexture);
 }
 }
-void OnValidate()
-{
-		ChangeValue=Therma_Variation;
-		ChangeValue2=Contrast;
-		ChangeValue3=Burn;
-		ChangeValue4=SceneCut;
-
-}
 void Update ()
 {
-if (Application.isPlaying)
-{
-Therma_Variation = ChangeValue;
-Contrast = ChangeValue2;
-Burn = ChangeValue3;
-SceneCut = ChangeValue4;
-}
 #if UNITY_EDITOR
 if (Application.isPlaying!=true)
 {

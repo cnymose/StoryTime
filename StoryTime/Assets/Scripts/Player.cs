@@ -8,6 +8,8 @@ public class Player : MonoBehaviour {
     UnityEngine.UI.Text collectibleText;
     public AudioSource robotMovement;
     CameraFilterPack_FX_EarthQuake screenShake;
+    CameraFilterPack_Atmosphere_Fog fog;
+    CameraFilterPack_Blizzard blizzard;
     AudioSource source;
     public bool canMove = true;
     Camera cam;
@@ -54,7 +56,9 @@ public class Player : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        
+        fog = Camera.main.GetComponent<CameraFilterPack_Atmosphere_Fog>();
+
+        blizzard = Camera.main.GetComponent<CameraFilterPack_Blizzard>();
         collectibleImage = GameObject.Find("CollectibleImage").GetComponent<UnityEngine.UI.Image>();
         collectibleBG = GameObject.Find("CollectibleBG");
         collectibleBG.SetActive(false);
@@ -201,13 +205,15 @@ public class Player : MonoBehaviour {
 
     }
 
-    void OnControllerColliderHit(ControllerColliderHit hit) { //When the character lands
+    void OnControllerColliderHit(ControllerColliderHit hit) { //When the character lands on different terrain
  
         if (hit.gameObject.tag == "Grass") {
             CheckLand();
             if (!(terrain == "Grass")) {
+                StartCoroutine(FadeFogOut());
                 terrain = "Grass";
                 for (int i = 0; i < ambienceObjects.Length; i++) {
+                   
                     ambienceObjects[i].clip = ambiences[0];
                     ambienceObjects[i].Play();
                 }
@@ -217,7 +223,8 @@ public class Player : MonoBehaviour {
             CheckLand();
             if (!(terrain == "Sand"))
             {
-                
+               
+                StartCoroutine(FadeFogIn());
                 terrain = "Sand";
                 for (int i = 0; i < ambienceObjects.Length; i++)
                 {
@@ -228,9 +235,41 @@ public class Player : MonoBehaviour {
         }
                
                
-             
+        
 
         }
+    IEnumerator FadeFogIn()
+    {
+        blizzard.enabled = true;
+        fog.enabled = true;
+        float fogVal = 0.75f;
+        float blizzVal = 0.2f;
+
+        fog.Fade = 0;
+        blizzard._Fade = 0;
+        for (int i = 0; i < 20; i++)
+        {
+            fog.Fade += (fogVal/20) ;
+            blizzard._Fade += (blizzVal/20);
+            yield return new WaitForSeconds(0.1f);
+        }
+        yield break;
+    }
+    IEnumerator FadeFogOut() {
+        float fogVal = 0.75f;
+        float blizzVal = 0.2f;
+        fog.Fade = fogVal;
+        blizzard._Fade = blizzVal;
+        for (int i = 0; i < 20; i++)
+        {
+            fog.Fade -= (fogVal / 20);
+            blizzard._Fade -= (blizzVal / 20);
+            yield return new WaitForSeconds(0.1f);
+        }
+        blizzard.enabled = false;
+        fog.enabled = false;
+        yield break;
+    }
 
     void CheckLand() {
 

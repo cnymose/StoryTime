@@ -1,6 +1,7 @@
 ///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
+//  CameraFilterPack - by VETASOFT 2016 ///
 ///////////////////////////////////////////
+
 using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode]
@@ -19,10 +20,7 @@ public float X = 1f;
 public float Y = 1f;
 [Range(-1f, 1f)]
 private float Value4 = 1f;
-public static float ChangeValue;
-public static float ChangeValue2;
-public static float ChangeValue3;
-public static float ChangeValue4;
+
 #endregion
 #region Properties
 Material material
@@ -40,10 +38,7 @@ return SCMaterial;
 #endregion
 void Start ()
 {
-ChangeValue = Value;
-ChangeValue2 = X;
-ChangeValue3 = Y;
-ChangeValue4 = Value4;
+
 SCShader = Shader.Find("CameraFilterPack/Vision_Crystal");
 if(!SystemInfo.supportsImageEffects)
 {
@@ -72,23 +67,9 @@ Graphics.Blit(sourceTexture, destTexture);
 }
 }
 
-void OnValidate()
-{
-		ChangeValue=Value;
-		ChangeValue2=X;
-		ChangeValue3=Y;
-		ChangeValue4=Value4;
-	
-}
 void Update ()
 {
-if (Application.isPlaying)
-{
-Value = ChangeValue;
-X = ChangeValue2;
-Y = ChangeValue3;
-Value4 = ChangeValue4;
-}
+
 #if UNITY_EDITOR
 if (Application.isPlaying!=true)
 {

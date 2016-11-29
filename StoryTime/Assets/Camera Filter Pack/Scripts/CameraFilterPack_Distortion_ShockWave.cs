@@ -1,6 +1,7 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
+
 using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode]
@@ -19,10 +20,7 @@ public float PosY = 0.5f;
 public float Speed = 1f;
 [Range(0f, 10f)]
 private float Size = 1f;
-public static float ChangeValue;
-public static float ChangeValue2;
-public static float ChangeValue3;
-public static float ChangeValue4;
+
 #endregion
 #region Properties
 Material material
@@ -40,10 +38,7 @@ return SCMaterial;
 #endregion
 void Start ()
 {
-ChangeValue = PosX;
-ChangeValue2 = PosY;
-ChangeValue3 = Speed;
-ChangeValue4 = Size;
+
 SCShader = Shader.Find("CameraFilterPack/Distortion_ShockWave");
 if(!SystemInfo.supportsImageEffects)
 {
@@ -71,15 +66,9 @@ else
 Graphics.Blit(sourceTexture, destTexture);
 }
 }
-void OnValidate(){ChangeValue=PosX;ChangeValue2=PosY;ChangeValue3=Speed;ChangeValue4=Size;}void Update ()
+void Update ()
 {
-if (Application.isPlaying)
-{
-PosX = ChangeValue;
-PosY = ChangeValue2;
-Speed = ChangeValue3;
-Size = ChangeValue4;
-}
+
 #if UNITY_EDITOR
 if (Application.isPlaying!=true)
 {

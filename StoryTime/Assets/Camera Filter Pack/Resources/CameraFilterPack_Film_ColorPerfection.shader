@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 
 Shader "CameraFilterPack/Film_ColorPerfection" { 
@@ -48,24 +48,24 @@ return OUT;
 }
 float Cubic(float value) 
 {
-    if (value < 0.5) { return value * value * value * 4.0; }
-    value -= 1.0; 
-    return value * value * value * 4.0 + 1.0;
+if (value < 0.5) { return value * value * value * 4.0; }
+value -= 1.0; 
+return value * value * value * 4.0 + 1.0;
 }
 
 float Sigmoidal (float x) 
 {
-    return 1.0 / (1.0 + (exp(-(x - 0.5) * 14.0))); 
+return 1.0 / (1.0 + (exp(-(x - 0.5) * 14.0))); 
 }
 
 float4 frag (v2f i) : COLOR
 {
-   float2 uv = i.texcoord.xy;
-   float4 C = tex2D(_MainTex, uv);
-   float4 A = C; 
-   C = float4(Sigmoidal (C.r), Sigmoidal (C.g),Sigmoidal (C.b), 1.0); 
-   C = float4(pow(C.r, _Value), pow(C.g, _Value), pow(C.b,_Value), 1.0); 
-   return  C;
+float2 uv = i.texcoord.xy;
+float4 C = tex2D(_MainTex, uv);
+float4 A = C; 
+C = float4(Sigmoidal (C.r), Sigmoidal (C.g),Sigmoidal (C.b), 1.0); 
+C = float4(pow(C.r, _Value), pow(C.g, _Value), pow(C.b,_Value), 1.0); 
+return  C;
 }
 ENDCG
 }

@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 
 Shader "CameraFilterPack/FX_EarthQuake" { 
@@ -51,21 +51,21 @@ return OUT;
 
 float nrand(float2 n) 
 {
-  return frac(sin(dot(n.xy, float2(12.9898, 78.233)))* 43758.5453);
+return frac(sin(dot(n.xy, float2(12.9898, 78.233)))* 43758.5453);
 }
 
 
 float4 frag (v2f i) : COLOR
 {
-	float2 uv = i.texcoord.xy;
-	float t = float(int(_TimeX * _Value));
-	float2 suv = float2(0,0);
-	suv.x = uv.x + _Value2 * nrand(t);
-	suv.y = uv.y + _Value3 * nrand(t + 23.0);
-	suv.x -=_Value2/2;
-	suv.y -=_Value3/2;
-	float3 col = tex2D(_MainTex,suv).rgb;
-	return float4(col,1.0);
+float2 uv = i.texcoord.xy;
+float t = float(int(_TimeX * _Value));
+float2 suv = float2(0,0);
+suv.x = uv.x + _Value2 * nrand(t);
+suv.y = uv.y + _Value3 * nrand(t + 23.0);
+suv.x -=_Value2/2;
+suv.y -=_Value3/2;
+float3 col = tex2D(_MainTex,suv).rgb;
+return float4(col,1.0);
 }
 ENDCG
 }

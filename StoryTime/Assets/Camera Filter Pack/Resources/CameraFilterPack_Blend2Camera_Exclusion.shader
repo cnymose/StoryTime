@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 Shader "CameraFilterPack/Blend2Camera_Exclusion" { 
 Properties 
@@ -51,7 +51,7 @@ return OUT;
 }
 float3 exclusion( float3 s, float3 d )
 {
-	return s + d - 2.0 * s * d;
+return s + d - 2.0 * s * d;
 }
 
 float4 frag (v2f i) : COLOR

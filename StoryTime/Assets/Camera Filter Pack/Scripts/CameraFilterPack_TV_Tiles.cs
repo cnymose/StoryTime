@@ -1,6 +1,7 @@
 ///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
+//  CameraFilterPack - by VETASOFT 2016 ///
 ///////////////////////////////////////////
+
 using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode]
@@ -19,10 +20,7 @@ public float Intensity = 4f;
 public float StretchX = 0.6f;
 [Range(0f, 1f)]
 public float StretchY = 0.4f;
-public static float ChangeValue;
-public static float ChangeValue2;
-public static float ChangeValue3;
-public static float ChangeValue4;
+
 #endregion
 #region Properties
 Material material
@@ -40,10 +38,6 @@ return SCMaterial;
 #endregion
 void Start ()
 {
-ChangeValue = Size;
-ChangeValue2 = Intensity;
-ChangeValue3 = StretchX;
-ChangeValue4 = StretchY;
 SCShader = Shader.Find("CameraFilterPack/TV_Tiles");
 if(!SystemInfo.supportsImageEffects)
 {
@@ -71,15 +65,9 @@ else
 Graphics.Blit(sourceTexture, destTexture);
 }
 }
-void OnValidate(){ChangeValue=Size;ChangeValue2=Intensity;ChangeValue3=StretchX;ChangeValue4=StretchY;}void Update ()
+void Update ()
 {
-if (Application.isPlaying)
-{
-Size = ChangeValue;
-Intensity = ChangeValue2;
-StretchX = ChangeValue3;
-StretchY = ChangeValue4;
-}
+
 #if UNITY_EDITOR
 if (Application.isPlaying!=true)
 {

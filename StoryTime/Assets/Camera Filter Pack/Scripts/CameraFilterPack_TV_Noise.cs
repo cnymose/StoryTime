@@ -1,6 +1,7 @@
 ///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
+//  CameraFilterPack - by VETASOFT 2016 ///
 ///////////////////////////////////////////
+
 using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode]
@@ -11,18 +12,8 @@ public Shader SCShader;
 private float TimeX = 1.0f;
 private Vector4 ScreenResolution;
 private Material SCMaterial;
-[Range(0.0001f, 0.5f)]
-private float Size = 0.01f;
-[Range(-1.5f, 1.5f)]
-private float LightBackGround = 0.5f;
-[Range(0f, 10f)]
-private float Speed = 1f;
-[Range(0f, 10f)]
-private float Size2 = 1f;
-public static float ChangeValue;
-public static float ChangeValue2;
-public static float ChangeValue3;
-public static float ChangeValue4;
+[Range(0.0001f, 1f)]
+public float Fade = 0.01f;
 #endregion
 #region Properties
 Material material
@@ -40,10 +31,6 @@ return SCMaterial;
 #endregion
 void Start ()
 {
-ChangeValue = Size;
-ChangeValue2 = LightBackGround;
-ChangeValue3 = Speed;
-ChangeValue4 = Size2;
 SCShader = Shader.Find("CameraFilterPack/TV_Noise");
 if(!SystemInfo.supportsImageEffects)
 {
@@ -59,10 +46,8 @@ if(SCShader != null)
 TimeX+=Time.deltaTime;
 if (TimeX>100)  TimeX=0;
 material.SetFloat("_TimeX", TimeX);
-material.SetFloat("_Value", Size);
-material.SetFloat("_Value2", LightBackGround);
-material.SetFloat("_Value3", Speed);
-material.SetFloat("_Value4", Size2);
+material.SetFloat("_Fade", Fade);
+
 material.SetVector("_ScreenResolution",new Vector4(sourceTexture.width,sourceTexture.height,0.0f,0.0f));
 Graphics.Blit(sourceTexture, destTexture, material);
 }
@@ -71,15 +56,8 @@ else
 Graphics.Blit(sourceTexture, destTexture);
 }
 }
-void OnValidate(){ChangeValue=Size;ChangeValue2=LightBackGround;ChangeValue3=Speed;ChangeValue4=Size2;}void Update ()
+void Update ()
 {
-if (Application.isPlaying)
-{
-Size = ChangeValue;
-LightBackGround = ChangeValue2;
-Speed = ChangeValue3;
-Size2 = ChangeValue4;
-}
 #if UNITY_EDITOR
 if (Application.isPlaying!=true)
 {

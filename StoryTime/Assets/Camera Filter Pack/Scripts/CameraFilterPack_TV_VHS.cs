@@ -1,6 +1,7 @@
 ///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
+//  CameraFilterPack - by VETASOFT 2016 ///
 ///////////////////////////////////////////
+
 using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode]
@@ -11,7 +12,7 @@ public Shader SCShader;
 private float TimeX = 1.0f;
 private Vector4 ScreenResolution;
 private Material SCMaterial;
-[Range(1f, 100f)]
+[Range(1f, 256f)]
 public float Cryptage = 64f;
 [Range(1f, 100f)]
 public float Parasite = 32f;
@@ -19,10 +20,7 @@ public float Parasite = 32f;
 public float Calibrage = 0f;
 [Range(0f, 1f)]
 public float WhiteParasite = 1f;
-public static float ChangeValue;
-public static float ChangeValue2;
-public static float ChangeValue3;
-public static float ChangeValue4;
+
 #endregion
 #region Properties
 Material material
@@ -40,10 +38,6 @@ return SCMaterial;
 #endregion
 void Start ()
 {
-ChangeValue = Cryptage;
-ChangeValue2 = Parasite;
-ChangeValue3 = Calibrage;
-ChangeValue4 = WhiteParasite;
 SCShader = Shader.Find("CameraFilterPack/TV_VHS");
 if(!SystemInfo.supportsImageEffects)
 {
@@ -71,15 +65,8 @@ else
 Graphics.Blit(sourceTexture, destTexture);
 }
 }
-void OnValidate(){ChangeValue=Cryptage;ChangeValue2=Parasite;ChangeValue3=Calibrage;ChangeValue4=WhiteParasite;}void Update ()
+void Update ()
 {
-if (Application.isPlaying)
-{
-Cryptage = ChangeValue;
-Parasite = ChangeValue2;
-Calibrage = ChangeValue3;
-WhiteParasite = ChangeValue4;
-}
 #if UNITY_EDITOR
 if (Application.isPlaying!=true)
 {

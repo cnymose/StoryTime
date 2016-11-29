@@ -1,6 +1,7 @@
 ///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
+//  CameraFilterPack - by VETASOFT 2016 ///
 ///////////////////////////////////////////
+
 using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode]
@@ -19,10 +20,9 @@ public float Contrast = 1f;
 public float Burn = 0f;
 [Range(0f, 16f)]
 public float SceneCut = 1f;
-public static float ChangeValue;
-public static float ChangeValue2;
-public static float ChangeValue3;
-public static float ChangeValue4;
+[Range(0f, 1f)]
+public float Fade = 1f;
+
 #endregion
 #region Properties
 Material material
@@ -40,10 +40,7 @@ return SCMaterial;
 #endregion
 void Start ()
 {
-ChangeValue = FramePerSecond;
-ChangeValue2 = Contrast;
-ChangeValue3 = Burn;
-ChangeValue4 = SceneCut;
+
 SCShader = Shader.Find("CameraFilterPack/TV_Old_Movie_2");
 if(!SystemInfo.supportsImageEffects)
 {
@@ -63,6 +60,7 @@ material.SetFloat("_Value", FramePerSecond);
 material.SetFloat("_Value2", Contrast);
 material.SetFloat("_Value3", Burn);
 material.SetFloat("_Value4", SceneCut);
+material.SetFloat("_Fade", Fade);
 material.SetVector("_ScreenResolution",new Vector4(sourceTexture.width,sourceTexture.height,0.0f,0.0f));
 Graphics.Blit(sourceTexture, destTexture, material);
 }
@@ -71,22 +69,10 @@ else
 Graphics.Blit(sourceTexture, destTexture);
 }
 }
-void OnValidate()
-{
-	ChangeValue=FramePerSecond;
-		ChangeValue2=Contrast;
-		ChangeValue3=Burn;
-		ChangeValue4=SceneCut;		
-}
+
 void Update ()
 {
-if (Application.isPlaying)
-{
-FramePerSecond = ChangeValue;
-Contrast = ChangeValue2;
-Burn = ChangeValue3;
-SceneCut = ChangeValue4;
-}
+
 #if UNITY_EDITOR
 if (Application.isPlaying!=true)
 {

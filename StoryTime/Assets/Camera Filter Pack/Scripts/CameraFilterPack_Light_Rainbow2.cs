@@ -1,6 +1,7 @@
 ///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
+//  CameraFilterPack - by VETASOFT 2016 ///
 ///////////////////////////////////////////
+
 using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode]
@@ -13,7 +14,7 @@ private Vector4 ScreenResolution;
 private Material SCMaterial;
 [Range(0.01f, 5)]
 public float Value = 1.5f;
-public static float ChangeValue;
+
 #endregion
 #region Properties
 Material material
@@ -31,7 +32,7 @@ return SCMaterial;
 #endregion
 void Start ()
 {
-ChangeValue = Value;
+
 SCShader = Shader.Find("CameraFilterPack/Light_Rainbow2");
 if(!SystemInfo.supportsImageEffects)
 {
@@ -56,17 +57,10 @@ else
 Graphics.Blit(sourceTexture, destTexture);
 }
 }
-	void OnValidate()
-{
-		ChangeValue=Value;
 
-}
 void Update ()
 {
-if (Application.isPlaying)
-{
-Value = ChangeValue;
-}
+
 #if UNITY_EDITOR
 if (Application.isPlaying!=true)
 {

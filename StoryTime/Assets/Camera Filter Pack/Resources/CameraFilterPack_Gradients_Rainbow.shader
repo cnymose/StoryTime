@@ -1,7 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
-
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 Shader "CameraFilterPack/Gradients_Rainbow" { 
 Properties 
@@ -52,24 +51,24 @@ float square(float s) { return s * s; }
 float3 square(float3 s) { return s * s; }
 
 float3 rainbowGradient(float t) {
-	float a = 1.0 - pow(abs(float3(t,t,t) - float3(0.65, 0.5, 0.2)) * float3(3.0, 3.0, 5.0), float3(1.5, 1.3, 1.7));
-	float3 c=float3(a,a,a);
-	c.r = max((0.15 - square(abs(t - 0.04) * 5.0)), c.r);
-	c.g = (t < 0.5) ? smoothstep(0.04, 0.45, t) : c.g;
-	return clamp(c, 0.0, 1.0); 
+float a = 1.0 - pow(abs(float3(t,t,t) - float3(0.65, 0.5, 0.2)) * float3(3.0, 3.0, 5.0), float3(1.5, 1.3, 1.7));
+float3 c=float3(a,a,a);
+c.r = max((0.15 - square(abs(t - 0.04) * 5.0)), c.r);
+c.g = (t < 0.5) ? smoothstep(0.04, 0.45, t) : c.g;
+return clamp(c, 0.0, 1.0); 
 }
 
 float4 frag (v2f i) : COLOR
 {
-    float t = i.texcoord.x;
-	float j = t + (frac(sin(i.texcoord.y * 7.5e2 + i.texcoord.x * 6.4) * 1e2) - 0.5) * 0.005;
-    float2 uv = i.texcoord.xy;
-    float4 tc = tex2D(_MainTex,uv);    
-    float b = (0.2126*tc.r + 0.7152*tc.g + 0.0722*tc.b);
-    b=lerp(b,1-b,_Value);
-    float3 map=lerp(tc,rainbowGradient(b),_Value2);
-    tc=float4(map,1.0);
- return  tc;
+float t = i.texcoord.x;
+float j = t + (frac(sin(i.texcoord.y * 7.5e2 + i.texcoord.x * 6.4) * 1e2) - 0.5) * 0.005;
+float2 uv = i.texcoord.xy;
+float4 tc = tex2D(_MainTex,uv);    
+float b = (0.2126*tc.r + 0.7152*tc.g + 0.0722*tc.b);
+b=lerp(b,1-b,_Value);
+float3 map=lerp(tc,rainbowGradient(b),_Value2);
+tc=float4(map,1.0);
+return  tc;
 }
 ENDCG
 }

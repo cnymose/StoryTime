@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 
 Shader "CameraFilterPack/Pixelisation_Dot" { 
@@ -50,25 +50,25 @@ return OUT;
 
 float4 frag (v2f i) : COLOR
 {
- 	float gridSize = _Value;
-	float3 backgroundColor=float3(_Value2,_Value2,_Value2);
-	float2 q = (i.texcoord.xy);
-    float2 uv = (floor(i.texcoord.xy/gridSize)*gridSize);
-	float3 texColor = tex2D(_MainTex,uv).xyz;
-    float diff = pow(distance(texColor,float3(0.0,1.0,0.0)),8.0); 
-	diff = smoothstep(0.0,1.5,diff);
-    texColor = lerp(backgroundColor,texColor,diff);
-    float texLum = dot(float3(0.2126,0.7152,0.0722),texColor);
-    float3 color = backgroundColor;
-    float2 ppos = (q - uv)/(float2(gridSize,gridSize));
-	float power = texLum*texLum*16.0;
-    float radius = 0.5;
-    float dist = pow(abs(ppos.x-0.5),power) + pow(abs(ppos.y - 0.5),power);
-    if( dist < pow(radius,power))
-    {
-    	color = texColor;
-    }
-    return  float4(color,1.0); 
+float gridSize = _Value;
+float3 backgroundColor=float3(_Value2,_Value2,_Value2);
+float2 q = (i.texcoord.xy);
+float2 uv = (floor(i.texcoord.xy/gridSize)*gridSize);
+float3 texColor = tex2D(_MainTex,uv).xyz;
+float diff = pow(distance(texColor,float3(0.0,1.0,0.0)),8.0); 
+diff = smoothstep(0.0,1.5,diff);
+texColor = lerp(backgroundColor,texColor,diff);
+float texLum = dot(float3(0.2126,0.7152,0.0722),texColor);
+float3 color = backgroundColor;
+float2 ppos = (q - uv)/(float2(gridSize,gridSize));
+float power = texLum*texLum*16.0;
+float radius = 0.5;
+float dist = pow(abs(ppos.x-0.5),power) + pow(abs(ppos.y - 0.5),power);
+if( dist < pow(radius,power))
+{
+color = texColor;
+}
+return  float4(color,1.0); 
 }
 ENDCG
 }

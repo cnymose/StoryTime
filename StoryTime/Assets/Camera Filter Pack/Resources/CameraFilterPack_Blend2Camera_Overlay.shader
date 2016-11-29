@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 Shader "CameraFilterPack/Blend2Camera_Overlay" { 
 Properties 
@@ -52,16 +52,16 @@ return OUT;
 
 float overlay( float s, float d )
 {
-	return (d < 0.5) ? 2.0 * s * d : 1.0 - 2.0 * (1.0 - s) * (1.0 - d);
+return (d < 0.5) ? 2.0 * s * d : 1.0 - 2.0 * (1.0 - s) * (1.0 - d);
 }
 
 float3 overlay( float3 s, float3 d )
 {
-	float3 c;
-	c.x = overlay(s.x,d.x);
-	c.y = overlay(s.y,d.y);
-	c.z = overlay(s.z,d.z);
-	return c;
+float3 c;
+c.x = overlay(s.x,d.x);
+c.y = overlay(s.y,d.y);
+c.z = overlay(s.z,d.z);
+return c;
 }
 
 float4 frag (v2f i) : COLOR

@@ -1,6 +1,7 @@
 ///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
+//  CameraFilterPack - by VETASOFT 2016 ///
 ///////////////////////////////////////////
+
 using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode]
@@ -64,7 +65,7 @@ void Update ()
 #if UNITY_EDITOR
 if (Application.isPlaying!=true)
 {
-	SCShader = Shader.Find(ShaderName);
+SCShader = Shader.Find(ShaderName);
 }
 #endif
 }

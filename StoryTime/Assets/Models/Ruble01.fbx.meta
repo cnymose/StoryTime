@@ -1,12 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< HEAD
 guid: 5e52391efb10eab439ed577d86fa2dd0
-timeCreated: 1478542097
-=======
-guid: a13225011baa68e40ae4d960762f9701
-timeCreated: 1478255262
->>>>>>> origin/Lukas_Stationary
-licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
@@ -102,7 +95,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 0
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1

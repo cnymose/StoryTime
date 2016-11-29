@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 
 Shader "CameraFilterPack/Film_Grain" { 
@@ -47,30 +47,18 @@ OUT.color = IN.color;
 return OUT;
 }
 
-inline float modx(float x,float modu) {
-  return x - floor(x * (1.0 / modu)) * modu;
-}  
-
-inline float2 modx(float2 x,float2 modu) {
-  return x - floor(x * (1.0 / modu)) * modu;
-} 
-inline float3 modx(float3 x,float3 modu) {
-  return x - floor(x * (1.0 / modu)) * modu;
-} 
-  
-inline float4 modx(float4 x,float4 modu) {
-  return x - floor(x * (1.0 / modu)) * modu;
-} 
-
 float4 frag (v2f i) : COLOR
 {
 float2 uv = i.texcoord.xy;
 float4 color = tex2D(_MainTex, uv);
 float strength = _Value;
 float x = (uv.x + 4.0) * (uv.y + 4.0) * (_TimeX * 10.0);
-float g=modx((modx(x, 13.0) + 1.0) * (modx(x, 123.0) + 1.0), 0.01)-0.005;
+float g=fmod((fmod(x, 13.0) + 1.0) * (fmod(x, 123.0) + 1.0), 0.01)-0.005;
 float4 grain = float4(g,g,g,g) * strength;
-return  color + grain;
+float3 gray=dot(color.rgb, float3(.222, .707, .071));
+color.rgb = lerp(color, color + grain, 1-gray.r-0.5);
+//return float4(gray.rgb,1);
+return  color;
 }
 ENDCG
 }

@@ -1,7 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
-
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 Shader "CameraFilterPack/EXTRA_SHOWFPS" { 
 Properties 
@@ -48,17 +47,21 @@ OUT.color = IN.color;
 return OUT;
 }
 
-inline float mod(float x,float modu) 
-{
-  return x - floor(x * (1.0 / modu)) * modu;
-}
+
+// SHADER NEED TO BE IMPROVED
+
+ inline float mod(float x,float modu) 
+ {
+ return x - floor(x * (1.0 / modu)) * modu;
+ }
 
 int D(float2 p, float n) 
 {
-    int i=int(p.y), b=int(pow(2.,floor(30.-p.x-n*3.)));
-    i = p.x<0.||p.x>3.? 0:
-    i==5? 972980223: i==4? 690407533: i==3? 704642687: i==2? 696556137:i==1? 972881535: 0;
- 	return i/b-2*(i/b/2);
+   int i=int(p.y), b=int(pow(2.,floor(30.-p.x-n*3.)));
+   i = p.x<0.||p.x>3.? 0:
+   i==5? 972980223: i==4? 690407533: i==3? 704642687: i==2? 696556137:i==1? 972881535: 0;
+   return i/b-2*(i/b/2);
+return 1;
 }
 
 fixed4 frag (v2f i) : COLOR
@@ -66,11 +69,12 @@ fixed4 frag (v2f i) : COLOR
 	float2 uv=i.texcoord;
     fixed4 fps=float4(0,0,0,0);
     uv*=512;
-    uv/=_Value; float c=1e3;
+    uv/=_Value;
+    float c=1e3;
     uv.x*=2;
     for (int n=0; n<4; n++)
     { 
-     if ((uv.x-=4.)<3.) { float h=D(uv,mod(floor(_Value2/c),10.));
+     if ((uv.x-=4.)<3.) { float h=saturate(D(uv,mod(floor(_Value2/c),10.)));
      if (_Value2>45) fps += float4(0.,h,0.,1.0);
      else
      if (_Value2>30) fps += float4(h,h,0.,1.0);
@@ -81,7 +85,7 @@ fixed4 frag (v2f i) : COLOR
     }
     fixed4 txt=tex2D(_MainTex,i.texcoord);
     txt+=fps;
-    return txt;
+return txt;
 }
 ENDCG
 }

@@ -1,6 +1,7 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
+
 using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode]
@@ -19,10 +20,7 @@ public float MovX = 0.5f;
 public float MovY = 0.5f;
 [Range(0f, 10f)]
 private float blurWidth  = 1f;
-public static float ChangeValue;
-public static float ChangeValue2;
-public static float ChangeValue3;
-public static float ChangeValue4;
+
 #endregion
 #region Properties
 Material material
@@ -40,10 +38,7 @@ return SCMaterial;
 #endregion
 void Start ()
 {
-ChangeValue = Intensity;
-ChangeValue2 = MovX;
-ChangeValue3 = MovY;
-ChangeValue4 = blurWidth ;
+
 SCShader = Shader.Find("CameraFilterPack/Blur_Radial_Fast");
 if(!SystemInfo.supportsImageEffects)
 {
@@ -72,23 +67,9 @@ Graphics.Blit(sourceTexture, destTexture);
 }
 }
 
-void OnValidate()
-{
-		ChangeValue=Intensity;
-		ChangeValue2=MovX;
-		ChangeValue3=MovY;
-		ChangeValue4=blurWidth;
-}
-
 void Update ()
 {
-if (Application.isPlaying)
-{
-Intensity = ChangeValue;
-MovX = ChangeValue2;
-MovY = ChangeValue3;
-blurWidth  = ChangeValue4;
-}
+
 #if UNITY_EDITOR
 if (Application.isPlaying!=true)
 {

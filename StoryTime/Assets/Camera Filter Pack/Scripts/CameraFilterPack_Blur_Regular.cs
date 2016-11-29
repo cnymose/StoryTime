@@ -1,6 +1,6 @@
-﻿////////////////////////////////////////////////////////////////////////////////////
-// CameraFilterPack v2.0 - by VETASOFT 2015 //////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 using UnityEngine;
 using System.Collections;
@@ -17,8 +17,6 @@ public class CameraFilterPack_Blur_Regular : MonoBehaviour {
 	public Vector2 Distance = new Vector2(30.0f,0.0f);
 
 
-	public static int ChangeLevel;
-	public static Vector2 ChangeDistance;
 	#endregion
 	
 	#region Properties
@@ -37,8 +35,6 @@ public class CameraFilterPack_Blur_Regular : MonoBehaviour {
 	#endregion
 	void Start () 
 	{
-		ChangeLevel  = Level;
-		ChangeDistance = Distance;
 		SCShader = Shader.Find("CameraFilterPack/Blur_Regular");
 
 		if(!SystemInfo.supportsImageEffects)
@@ -67,20 +63,10 @@ public class CameraFilterPack_Blur_Regular : MonoBehaviour {
 		
 		
 	}
-	void OnValidate()
-{
-		ChangeLevel=Level;
-		ChangeDistance=Distance;
 	
-}
-	// Update is called once per frame
+	 
 	void Update () 
 	{
-		if (Application.isPlaying)
-		{
-			Level = ChangeLevel;
-			Distance = ChangeDistance;
-		}
 		#if UNITY_EDITOR
 		if (Application.isPlaying!=true)
 		{

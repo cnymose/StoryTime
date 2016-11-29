@@ -1,6 +1,7 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
+
 Shader "CameraFilterPack/Distortion_ShockWave" { 
 Properties 
 {
@@ -48,28 +49,28 @@ return OUT;
 }
 float4 frag (v2f i) : COLOR
 {
-    float time=_TimeX*_Value3;
-    float offset = (time- floor(time))/time;
-	float CurrentTime = (time)*(offset);    
- 	float3 WaveParams = float3(10.0, 0.8, 0.1); 
-    float2 WaveCentre = float2(_Value, _Value2);
-  	float2 texCoord = i.texcoord.xy ;      
-  	float Dist = distance(texCoord, WaveCentre);
-  	float ScaleDiff = 1.0;
-  	float Change=0;
+float time=_TimeX*_Value3;
+float offset = (time- floor(time))/time;
+float CurrentTime = (time)*(offset);    
+float3 WaveParams = float3(10.0, 0.8, 0.1); 
+float2 WaveCentre = float2(_Value, _Value2);
+float2 texCoord = i.texcoord.xy ;      
+float Dist = distance(texCoord, WaveCentre);
+float ScaleDiff = 1.0;
+float Change=0;
 if ((Dist <= ((CurrentTime) + (WaveParams.z))) && 
-	(Dist >= ((CurrentTime) - (WaveParams.z)))) 
-	{
- 		float Diff = (Dist - CurrentTime); 
-		ScaleDiff = (1.0 - pow(abs(Diff * WaveParams.x), WaveParams.y)); 
-		float DiffTime = (Diff  * ScaleDiff);       
-		float2 DiffTexCoord = normalize(texCoord - WaveCentre);  
-		Change=1;     
-		texCoord += ((DiffTexCoord * DiffTime) / (CurrentTime * Dist * 40.0));
-	}  
-  		float4 Color = tex2D(_MainTex, texCoord); 
-		Color += ((Color * ScaleDiff) / (CurrentTime * Dist * 40.0))*Change; 
-		return Color; 
+(Dist >= ((CurrentTime) - (WaveParams.z)))) 
+{
+float Diff = (Dist - CurrentTime); 
+ScaleDiff = (1.0 - pow(abs(Diff * WaveParams.x), WaveParams.y)); 
+float DiffTime = (Diff  * ScaleDiff);       
+float2 DiffTexCoord = normalize(texCoord - WaveCentre);  
+Change=1;     
+texCoord += ((DiffTexCoord * DiffTime) / (CurrentTime * Dist * 40.0));
+}  
+float4 Color = tex2D(_MainTex, texCoord); 
+Color += ((Color * ScaleDiff) / (CurrentTime * Dist * 40.0))*Change; 
+return Color; 
 }
 ENDCG
 }

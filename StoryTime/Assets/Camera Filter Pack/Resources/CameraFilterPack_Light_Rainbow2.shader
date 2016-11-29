@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 
 Shader "CameraFilterPack/Light_Rainbow2" { 
@@ -47,31 +47,31 @@ OUT.color = IN.color;
 return OUT;
 }
 inline float modx(float x,float modu) {
-  return x - floor(x * (1.0 / modu)) * modu;
+return x - floor(x * (1.0 / modu)) * modu;
 }  
 
 inline float3 modx(float3 x,float3 modu) {
-  return x - floor(x * (1.0 / modu)) * modu;
+return x - floor(x * (1.0 / modu)) * modu;
 } 
 float3 hsv2rgb( in float3 c )
 {
-    float3 rgb = clamp( abs(modx(c.x*6.0+float3(0.0,4.0,2.0),6.0)-3.0)-1.0, 0.0, 1.0 );
-	return c.z * lerp( float3(1.0,1.0,1.0), rgb, c.y);
+float3 rgb = clamp( abs(modx(c.x*6.0+float3(0.0,4.0,2.0),6.0)-3.0)-1.0, 0.0, 1.0 );
+return c.z * lerp( float3(1.0,1.0,1.0), rgb, c.y);
 }
 
 float4 frag (v2f i) : COLOR
 {
-    float2 uv = i.texcoord.xy;
-    uv -= float2(0.5,0.5);
-    uv.y *= _Value;    
-    uv += sin(uv.x * 10. * (uv.y * 1.11)  + _TimeX) * 0.15;
-    float m = clamp((.7 - abs( uv.y )) * 3.,0.,1.);    
-    float3 V = hsv2rgb( float3((uv.x * 0.1) + _TimeX * 0.25 ,1.,1.));
-    V *=  m;    
-    V *= 1. - (sin( uv.y * uv.y * 30. ) * .26);
-    V*=tex2D(_MainTex, i.texcoord.xy)/2;
- 
-   return  float4(V,1.0);
+float2 uv = i.texcoord.xy;
+uv -= float2(0.5,0.5);
+uv.y *= _Value;    
+uv += sin(uv.x * 10. * (uv.y * 1.11)  + _TimeX) * 0.15;
+float m = clamp((.7 - abs( uv.y )) * 3.,0.,1.);    
+float3 V = hsv2rgb( float3((uv.x * 0.1) + _TimeX * 0.25 ,1.,1.));
+V *=  m;    
+V *= 1. - (sin( uv.y * uv.y * 30. ) * .26);
+V*=tex2D(_MainTex, i.texcoord.xy)/2;
+
+return  float4(V,1.0);
 }
 ENDCG
 }

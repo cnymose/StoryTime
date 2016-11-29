@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode]
@@ -11,7 +11,7 @@ public Shader SCShader;
 private float TimeX = 1.0f;
 private Vector4 ScreenResolution;
 private Material SCMaterial;
-[Range(-10f, 10f)]
+[Range(0f, 4f)]
 public float Gamma = 0.55f;
 [Range(0f, 10f)]
 private float Value2 = 1f;
@@ -19,10 +19,6 @@ private float Value2 = 1f;
 private float Value3 = 1f;
 [Range(0f, 10f)]
 private float Value4 = 1f;
-public static float ChangeValue;
-public static float ChangeValue2;
-public static float ChangeValue3;
-public static float ChangeValue4;
 #endregion
 #region Properties
 Material material
@@ -40,10 +36,6 @@ return SCMaterial;
 #endregion
 void Start ()
 {
-ChangeValue = Gamma;
-ChangeValue2 = Value2;
-ChangeValue3 = Value3;
-ChangeValue4 = Value4;
 SCShader = Shader.Find("CameraFilterPack/Film_ColorPerfection");
 if(!SystemInfo.supportsImageEffects)
 {
@@ -51,7 +43,6 @@ enabled = false;
 return;
 }
 }
-
 void OnRenderImage (RenderTexture sourceTexture, RenderTexture destTexture)
 {
 if(SCShader != null)
@@ -71,24 +62,8 @@ else
 Graphics.Blit(sourceTexture, destTexture);
 }
 }
-
-void OnValidate()
-{
-	ChangeValue=Gamma;
-	ChangeValue2=Value2;
-	ChangeValue3=Value3;
-	ChangeValue4=Value4;	
-}
-
 void Update ()
 {
-if (Application.isPlaying)
-{
-Gamma = ChangeValue;
-Value2 = ChangeValue2;
-Value3 = ChangeValue3;
-Value4 = ChangeValue4;
-}
 #if UNITY_EDITOR
 if (Application.isPlaying!=true)
 {

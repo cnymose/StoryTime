@@ -1,4 +1,7 @@
-﻿// Camera Filter Pack - (c)VETASOFT 2014
+﻿////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
+
 Shader "CameraFilterPack/Distortion_FishEye" {
 	Properties 
 	{
@@ -56,22 +59,15 @@ fixed4 frag (v2f i) : COLOR
 	float2 m = float2(0.5, 0.5 );
 	float2 d = p - m;
 	float  r = sqrt(dot(d, d)); 
-
 	float power = 4.44289334 * (_Distortion - 0.5);
-
 	float bind = m.y;
-	
-	if (power > 0.0) bind = 0.70710678;
-
 	float2 uv;
 	if (power > 0.0)
 		uv = m + normalize(d) * tan(r * power) * bind / tan( bind * power);
 	else if (power < 0.0)
 		uv = m + normalize(d) * atan(r * -power * 10.0) * bind / atan(-power * bind * 10.0);
 	else uv = p;
-
 	fixed3 col = tex2D(_MainTex, float2(uv.x, uv.y)).xyz;
-
 	return fixed4(col, 1.0);
 }
 			

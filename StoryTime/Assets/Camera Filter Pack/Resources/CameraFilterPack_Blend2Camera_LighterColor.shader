@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 Shader "CameraFilterPack/Blend2Camera_LighterColor" { 
 Properties 
@@ -52,7 +52,7 @@ return OUT;
 
 float3 lighterColor( float3 s, float3 d )
 {
-	return (s.x + s.y + s.z > d.x + d.y + d.z) ? s : d;
+return (s.x + s.y + s.z > d.x + d.y + d.z) ? s : d;
 }
 
 

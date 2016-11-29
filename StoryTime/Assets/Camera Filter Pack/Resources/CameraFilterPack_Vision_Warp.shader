@@ -1,6 +1,7 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
+
 
 
 Shader "CameraFilterPack/Vision_Warp" { 
@@ -50,32 +51,32 @@ return OUT;
 
 float sinc(float r, float width)
 {
-    width *= 10.0;
-    float N = 1.1;
-    float numer = sin(r / width);
-    float denom = (r /width);
-    if(abs(denom) <= 0.1) return 1.0;
-    else return abs(numer / denom);
+width *= 10.0;
+float N = 1.1;
+float numer = sin(r / width);
+float denom = (r /width);
+if(abs(denom) <= 0.1) return 1.0;
+else return abs(numer / denom);
 } 
 
 float expo(float r, float dev)
 {
-    return 1.0 * exp(- r*r / dev);
+return 1.0 * exp(- r*r / dev);
 }
 
 float4 frag (v2f i) : COLOR
 {
-	float2 uv = i.texcoord.xy;
-    float2 cdiff = abs(uv - 0.5);
-    float myradius = length(cdiff);
-    float radius = _TimeX/3.0; 
-    float r = sin((myradius - radius) * 5.0);
-    r = r*r;  
-    float s=sinc(r, 0.001);
-    float4 fColor = float4(s,s,s, 1.0);
-    float dist2 = 1.0 - smoothstep(_Value,_Value-0.05-_Value2, length(float2(0.5,0.5) - uv));
-    fColor.rgb=lerp(tex2D(_MainTex,uv),fColor.rgb,dist2).rgb;
-    return fColor;
+float2 uv = i.texcoord.xy;
+float2 cdiff = abs(uv - 0.5);
+float myradius = length(cdiff);
+float radius = _TimeX/3.0; 
+float r = sin((myradius - radius) * 5.0);
+r = r*r;  
+float s=sinc(r, 0.001);
+float4 fColor = float4(s,s,s, 1.0);
+float dist2 = 1.0 - smoothstep(_Value,_Value-0.05-_Value2, length(float2(0.5,0.5) - uv));
+fColor.rgb=lerp(tex2D(_MainTex,uv),fColor.rgb,dist2).rgb;
+return fColor;
 }
 ENDCG
 }

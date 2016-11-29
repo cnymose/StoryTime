@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 Shader "CameraFilterPack/Blend2Camera_VividLight" { 
 Properties 
@@ -51,16 +51,16 @@ return OUT;
 }
 float vividLight( float s, float d )
 {
-	return (s < 0.5) ? 1.0 - (1.0 - d) / (2.0 * s) : d / (2.0 * (1.0 - s));
+return (s < 0.5) ? 1.0 - (1.0 - d) / (2.0 * s) : d / (2.0 * (1.0 - s));
 }
 
 float3 vividLight( float3 s, float3 d )
 {
-	float3 c;
-	c.x = vividLight(s.x,d.x);
-	c.y = vividLight(s.y,d.y);
-	c.z = vividLight(s.z,d.z);
-	return c;
+float3 c;
+c.x = vividLight(s.x,d.x);
+c.y = vividLight(s.y,d.y);
+c.z = vividLight(s.z,d.z);
+return c;
 }
 
 

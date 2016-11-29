@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 
 Shader "CameraFilterPack/Colors_NewPosterize" { 
@@ -50,23 +50,23 @@ return OUT;
 }
 float4 frag (v2f i) : COLOR
 {
-    float2 uv = i.texcoord.xy;
-    float4 c = tex2D(_MainTex, uv);
-    
-    c = pow(c, float4(_Value,_Value,_Value,_Value));
-    c = c * _Value2;
-    c = floor(c);
-    c = c / _Value2;
-    float d=1.0/_Value;
-    c = pow(c, float4(d,d,d,d));
-    
-    float4 gray = float4(.399, _Value3, .314, 1.);
-    float4 newC = float4(.0, .0, .0, 1.);
-    newC.r = dot(c.r, gray.r);
-    newC.g = dot(c.g, gray.g);
-    newC.b = dot(c.b, gray.b);
-    
-    return  newC;
+float2 uv = i.texcoord.xy;
+float4 c = tex2D(_MainTex, uv);
+
+c = pow(c, float4(_Value,_Value,_Value,_Value));
+c = c * _Value2;
+c = floor(c);
+c = c / _Value2;
+float d=1.0/_Value;
+c = pow(c, float4(d,d,d,d));
+
+float4 gray = float4(.399, _Value3, .314, 1.);
+float4 newC = float4(.0, .0, .0, 1.);
+newC.r = dot(c.r, gray.r);
+newC.g = dot(c.g, gray.g);
+newC.b = dot(c.b, gray.b);
+
+return  newC;
 }
 ENDCG
 }

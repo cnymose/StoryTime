@@ -1,6 +1,7 @@
 ///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
+//  CameraFilterPack - by VETASOFT 2016 ///
 ///////////////////////////////////////////
+
 using UnityEngine;
 using System.Collections;
 [ExecuteInEditMode]
@@ -19,10 +20,7 @@ public float Value2 = 0.6f;
 private float Value3 = 1f;
 [Range(0f, 10f)]
 private float Value4 = 1f;
-public static float ChangeValue;
-public static float ChangeValue2;
-public static float ChangeValue3;
-public static float ChangeValue4;
+
 #endregion
 #region Properties
 Material material
@@ -40,10 +38,7 @@ return SCMaterial;
 #endregion
 void Start ()
 {
-ChangeValue = Value;
-ChangeValue2 = Value2;
-ChangeValue3 = Value3;
-ChangeValue4 = Value4;
+
 SCShader = Shader.Find("CameraFilterPack/Vision_Warp");
 if(!SystemInfo.supportsImageEffects)
 {
@@ -71,15 +66,9 @@ else
 Graphics.Blit(sourceTexture, destTexture);
 }
 }
-void OnValidate(){ChangeValue=Value;ChangeValue2=Value2;ChangeValue3=Value3;ChangeValue4=Value4;}void Update ()
+void Update ()
 {
-if (Application.isPlaying)
-{
-Value = ChangeValue;
-Value2 = ChangeValue2;
-Value3 = ChangeValue3;
-Value4 = ChangeValue4;
-}
+
 #if UNITY_EDITOR
 if (Application.isPlaying!=true)
 {

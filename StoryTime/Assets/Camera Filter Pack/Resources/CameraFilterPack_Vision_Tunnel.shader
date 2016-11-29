@@ -1,6 +1,7 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
+
 
 Shader "CameraFilterPack/Vision_Tunnel" { 
 Properties 
@@ -50,21 +51,21 @@ return OUT;
 float mod(float x, float y) 
 { return x - y * floor(x/y); }
 float4 frag (v2f i) : COLOR {
-    
-    float2 p = -1.0 + 2.0 * i.texcoord.xy;
-    float2 uv;
 
-    float r = sqrt(dot(p,p));
-    float a = atan2(p.y,p.x);
+float2 p = -1.0 + 2.0 * i.texcoord.xy;
+float2 uv;
 
-    uv.x = .1*8 - .1 / r;
-    uv.y = mod(1. * a / 3.1416,_Value3); 
-	float3 col = tex2D(_MainTex,uv).xyz;
-    col *= smoothstep( 0., .5, r );
-    float dist2 = 1.0 - smoothstep(_Value,_Value-0.05-_Value2, length(float2(0.5,0.5) - i.texcoord.xy));
-	float3 result=lerp(tex2D(_MainTex,i.texcoord.xy),col,dist2);
-    return float4(result,1.0);
-    
+float r = sqrt(dot(p,p));
+float a = atan2(p.y,p.x);
+
+uv.x = .1*8 - .1 / r;
+uv.y = mod(1. * a / 3.1416,_Value3); 
+float3 col = tex2D(_MainTex,uv).xyz;
+col *= smoothstep( 0., .5, r );
+float dist2 = 1.0 - smoothstep(_Value,_Value-0.05-_Value2, length(float2(0.5,0.5) - i.texcoord.xy));
+float3 result=lerp(tex2D(_MainTex,i.texcoord.xy),col,dist2);
+return float4(result,1.0);
+
 }
 ENDCG
 }

@@ -1,6 +1,7 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
+
 
 
 Shader "CameraFilterPack/Vision_Plasma" { 
@@ -52,20 +53,20 @@ return OUT;
 float4 frag (v2f i) : COLOR
 {
 
-	const float3 one = float3(1.0,1.0,1.0);
-    float time = _TimeX * 0.33;
-    float2 uv = i.texcoord.xy;
-    float2 p0 = uv - float2(0.5 + 0.5 * sin(1.4 * 6.28 * uv.x + 2.8 * time), 0.5);
-    float3 wave = float3(0.5 * (cos(sqrt(dot(p0, p0)) * 5.6) + 1.0),cos(4.62 * dot(uv, uv) + time),cos(distance(uv, float2(1.6 * cos(time * 2.0), 1.0 * sin(time * 1.7))) * 1.3));
-    float color = dot(wave, one) / _Value3;
-    float dist2 = 1.0 - smoothstep(_Value,_Value-0.05-_Value2, length(float2(0.5,0.5) - uv));
- 	float3 dest=float3(
-        0.5 * (sin(6.28 * color + time * 3.45) + 1.0),
-        0.5 * (sin(6.28 * color + time * 3.15) + 1.0),
-        0.4 * (sin(6.28 * color + time * 1.26) + 1.0)
-	);
-	float3 ret=lerp(tex2D(_MainTex,uv),dest,dist2);
-	return float4(ret,1.0);
+const float3 one = float3(1.0,1.0,1.0);
+float time = _TimeX * 0.33;
+float2 uv = i.texcoord.xy;
+float2 p0 = uv - float2(0.5 + 0.5 * sin(1.4 * 6.28 * uv.x + 2.8 * time), 0.5);
+float3 wave = float3(0.5 * (cos(sqrt(dot(p0, p0)) * 5.6) + 1.0),cos(4.62 * dot(uv, uv) + time),cos(distance(uv, float2(1.6 * cos(time * 2.0), 1.0 * sin(time * 1.7))) * 1.3));
+float color = dot(wave, one) / _Value3;
+float dist2 = 1.0 - smoothstep(_Value,_Value-0.05-_Value2, length(float2(0.5,0.5) - uv));
+float3 dest=float3(
+0.5 * (sin(6.28 * color + time * 3.45) + 1.0),
+0.5 * (sin(6.28 * color + time * 3.15) + 1.0),
+0.4 * (sin(6.28 * color + time * 1.26) + 1.0)
+);
+float3 ret=lerp(tex2D(_MainTex,uv),dest,dist2);
+return float4(ret,1.0);
 }
 ENDCG
 }

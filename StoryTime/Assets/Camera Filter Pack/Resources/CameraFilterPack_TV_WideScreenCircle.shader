@@ -1,6 +1,6 @@
-///////////////////////////////////////////
-//  CameraFilterPack v2.0 - by VETASOFT 2015 ///
-///////////////////////////////////////////
+////////////////////////////////////////////
+// CameraFilterPack - by VETASOFT 2016 /////
+////////////////////////////////////////////
 
 
 Shader "CameraFilterPack/TV_WideScreenCircle" { 
@@ -49,14 +49,13 @@ return OUT;
 }
 float4 frag (v2f i) : COLOR
 {
-    float2 uv = i.texcoord.xy/1.0;
-    float4 tex = tex2D(_MainTex,uv);
-    float dist2 = 1.0 - smoothstep(_Value,_Value-_Value2, length(float2(0.5,0.5) - uv));
+float2 uv = i.texcoord.xy/1.0;
+float4 tex = tex2D(_MainTex,uv);
+float dist2 = 1.0 - smoothstep(_Value,_Value-_Value2, length(float2(0.5,0.5) - uv));
+float3 black=float3(0.0,0.0,0.0);
+float3 ret=lerp(tex,black,dist2);
 
-    float3 black=float3(0.0,0.0,0.0);
-    float3 ret=lerp(tex,black,dist2);
-  
-  return  float4( ret, 1.0 );
+return  float4( ret, 1.0 );
 }
 ENDCG
 }
