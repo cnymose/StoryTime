@@ -33,6 +33,7 @@ public class Player : MonoBehaviour {
     public GameObject interactable;
     public AudioClip interactClip;
     
+    
     public float jumpSpeed;
     public bool grounded;
     bool running;
