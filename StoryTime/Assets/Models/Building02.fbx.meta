@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 133cf3eedea8b7c40bc288c07252b892
 timeCreated: 1478542110
+=======
+guid: 0b30e4fa59754574bbdcfed0cdf9ffae
+timeCreated: 1478255268
+>>>>>>> origin/Lukas_Stationary
 licenseType: Free
 ModelImporter:
   serializedVersion: 19

@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: ee2438568e952774ea6a77cfa93370b9
 timeCreated: 1478542630
+=======
+guid: fa091814da1db494e92f9964932db16f
+timeCreated: 1478258101
+>>>>>>> origin/Lukas_Stationary
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName: {}
