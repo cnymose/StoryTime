@@ -13,7 +13,8 @@ public class Player : MonoBehaviour {
     AudioSource source;
     public bool canMove = true;
     Camera cam;
-    bool jumped;
+   public bool jumped;
+   public bool doubleJumped;
     public float gravityScale;
     public float movementSpeed;
     public float runSpeed;
@@ -54,6 +55,9 @@ public class Player : MonoBehaviour {
     public bool paused;
     public GameObject pauseUI;
     public MenuController menuController;
+    
+    float lastMove;
+    Vector3 oldPos;
 
     // Use this for initialization
     void Start() {
@@ -77,6 +81,10 @@ public class Player : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        if (move.magnitude > 1) {
+            
+            lastMove = Time.time;
+        }
         if (Input.GetButtonDown("Pause"))
         {
             Pause();
@@ -89,7 +97,8 @@ public class Player : MonoBehaviour {
 
         }
         if (!paused) {
-            jumped = false;
+            
+            
             running = Running();
 
             //Interact
@@ -124,13 +133,20 @@ public class Player : MonoBehaviour {
             }
 
             //Jump
-            if (Input.GetButtonDown("Jump") && player.isGrounded)
+            if (Input.GetButtonDown("Jump"))
             {
-                source.clip = jump;
-                source.pitch = Random.Range(0.9f, 1.05f);
-                source.Play();
-                jumped = true;
-                move.y = jumpSpeed;
+                if (player.isGrounded)
+                {
+                    source.clip = jump;
+                    source.pitch = Random.Range(0.9f, 1.05f);
+                    source.Play();
+                    jumped = true;
+                    move.y = jumpSpeed;
+                }
+                else if(!doubleJumped) {
+                    doubleJumped = true;
+                    move.y = jumpSpeed;
+                              }
             }
             if (move.magnitude > lookThreshold)
             {
@@ -156,9 +172,13 @@ public class Player : MonoBehaviour {
         {
             move.y -= gravity * Time.deltaTime;
         }
+        if (player.isGrounded) {
+            doubleJumped = false;
+            jumped = false;
+        }
 
         //Audio on terrain
-        if (input.magnitude > 0.05f && !source.isPlaying && player.isGrounded && !jumped) {
+        if (input.magnitude > 0.05f && !source.isPlaying && player.isGrounded) {
             source.pitch = 1;
             if (!running)
             {
@@ -192,11 +212,15 @@ public class Player : MonoBehaviour {
             }
            
         }
+
         oldInput = input;
         grounded = player.isGrounded;
+        anim.SetBool("DoubleJumped", doubleJumped);
+        anim.SetBool("Idle", Time.time > lastMove + 10);
         anim.SetBool("Running", running);
         anim.SetBool("Jumping", jumped);
         anim.SetFloat("Vel", input.magnitude);
+        oldPos = transform.position;
     }
 
     Vector3 ThresholdMove(Vector3 input, float threshold) {
