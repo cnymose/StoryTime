@@ -21,7 +21,7 @@ public class CamScript : MonoBehaviour
 
     public float xThreshold;
     public float yThreshold;
-
+    public bool keyboard = false;
     public int invert = -1;
 
     // Use this for initialization
@@ -51,11 +51,11 @@ public class CamScript : MonoBehaviour
             }
            // if (Mathf.Abs(Input.GetAxis("RotationX")) > xThreshold)
            // {
-                x += Input.GetAxis("RotationX") * xSpeed * 0.02f * Time.deltaTime;
+                x += keyboard == true ? Input.GetAxis("Mouse X") * xSpeed * 0.02f * Time.deltaTime : Input.GetAxis("RotationX") * xSpeed * 0.02f * Time.deltaTime;
           //  }
            // if (Mathf.Abs(Input.GetAxis("RotationY")) > yThreshold)
          //   {
-                y -= Input.GetAxis("RotationY") * ySpeed * 0.02f * Time.deltaTime * invert;
+                y -= keyboard == true ? Input.GetAxis("Mouse Y") * xSpeed * 0.02f * Time.deltaTime : Input.GetAxis("RotationY") * ySpeed * 0.02f * Time.deltaTime * invert;
           //  }
 
             y = ClampAngle(y, yMinLimit, yMaxLimit);

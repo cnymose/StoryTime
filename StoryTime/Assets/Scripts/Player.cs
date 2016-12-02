@@ -34,7 +34,7 @@ public class Player : MonoBehaviour {
     public GameObject interactText;
     public GameObject interactable;
     public AudioClip interactClip;
-    
+    bool keyboard = false;
     
     public float jumpSpeed;
     public bool grounded;
@@ -81,7 +81,13 @@ public class Player : MonoBehaviour {
         {
             Pause();
         }
+        if (Input.GetKeyDown(KeyCode.K)) {
+            keyboard = !keyboard;
+            cam.GetComponent<CamScript>().keyboard = !cam.GetComponent<CamScript>().keyboard;
+            
+            Cursor.lockState = keyboard == true ? CursorLockMode.Locked : CursorLockMode.None;
 
+        }
         if (!paused) {
             jumped = false;
             running = Running();
@@ -97,7 +103,7 @@ public class Player : MonoBehaviour {
             }
 
             yBackup = move.y;
-            input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+            input = keyboard == true ? new Vector3(Input.GetAxis("HorKey"), 0, Input.GetAxis("VertKey")) : new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
 
 
