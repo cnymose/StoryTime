@@ -21,7 +21,7 @@ public class reverseLaunchPad : MonoBehaviour {
     void OnTriggerEnter(Collider other)
     {
 
-        if (!reset && other.tag == "Player")
+        if (other.tag == "Player")
         {
 
             anim.SetBool("isOffPad", true);
