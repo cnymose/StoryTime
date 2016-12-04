@@ -55,7 +55,15 @@ public class Player : MonoBehaviour {
     public bool paused;
     public GameObject pauseUI;
     public MenuController menuController;
-    
+
+    //
+    private Vector3 contactPoint;
+    private RaycastHit hit;
+    public  float rayDistance = 1;
+    public float slideLimit = 50;
+    public float slideSpeed;
+    bool sliding = false;
+
     float lastMove;
     Vector3 oldPos;
 
@@ -98,8 +106,8 @@ public class Player : MonoBehaviour {
 
         }
         if (!paused) {
-            
-            
+
+            sliding = false;
             running = Running();
 
             //Interact
@@ -112,7 +120,30 @@ public class Player : MonoBehaviour {
                 }
             }
 
-            yBackup = move.y;
+            if (player.isGrounded)
+            {
+                
+                // See if surface immediately below should be slid down. We use this normally rather than a ControllerColliderHit point,
+                // because that interferes with step climbing amongst other annoyances
+                if (Physics.Raycast(transform.position, -Vector3.up, out hit, rayDistance))
+                {
+                    if (Vector3.Angle(hit.normal, Vector3.up) > slideLimit)
+                        sliding = true;
+                    print("setslidingtrue");
+                }
+                // However, just raycasting straight down from the center can fail when on steep slopes
+                // So if the above raycast didn't catch anything, raycast down from the stored ControllerColliderHit point instead
+                else
+                {
+                    Physics.Raycast(contactPoint + Vector3.up, -Vector3.up, out hit);
+                    if (Vector3.Angle(hit.normal, Vector3.up) > slideLimit)
+                        sliding = true;
+                    print("sliding from terrain");
+                }
+            }
+
+
+                yBackup = move.y;
             input = keyboard == true ? new Vector3(Input.GetAxis("HorKey"), 0, Input.GetAxis("VertKey")) : new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
 
@@ -136,7 +167,7 @@ public class Player : MonoBehaviour {
             //Jump
             if (Input.GetButtonDown("Jump"))
             {
-                if (player.isGrounded)
+                if (player.isGrounded && !sliding)
                 {
                     source.clip = jump;
                     source.pitch = Random.Range(0.9f, 1.05f);
@@ -155,25 +186,36 @@ public class Player : MonoBehaviour {
             }
             if (canMove)
             {
-                yBackup = move.y;
-                down.y = move.y;
-                move.y = 0;
-                if (!running)
+                if (sliding)
                 {
-                    player.Move(move * movementSpeed * Time.deltaTime);
+                    print("sliding");
+                    Vector3 hitNormal = hit.normal;
+                    move = new Vector3(hitNormal.x, -hitNormal.y, hitNormal.z);
+                    Vector3.OrthoNormalize(ref hitNormal, ref move);
+                    move *= slideSpeed;
                 }
-                else {
-                    player.Move(move * runSpeed * Time.deltaTime);
-                }
-                player.Move(down * gravityScale * Time.deltaTime);
-                move.y = yBackup;
+               
+                    yBackup = move.y;
+                    down.y = move.y;
+                    move.y = 0;
+                    if (!running)
+                    {
+                        player.Move(move * movementSpeed * Time.deltaTime);
+                    }
+                    else
+                    {
+                        player.Move(move * runSpeed * Time.deltaTime);
+                    }
+                    player.Move(down * gravityScale * Time.deltaTime);
+                    move.y = yBackup;
+                
             }
         }
         if (!player.isGrounded)
         {
             move.y -= gravity * Time.deltaTime;
         }
-        if (player.isGrounded) {
+        else {
             doubleJumped = false;
             jumped = false;
         }
@@ -238,7 +280,7 @@ public class Player : MonoBehaviour {
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit) { //When the character lands on different terrain
- 
+        contactPoint = hit.point;
         if (hit.gameObject.tag == "Grass") {
             CheckLand();
             if (!(terrain == "Grass")) {
