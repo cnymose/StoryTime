@@ -89,17 +89,14 @@ public class Player : MonoBehaviour {
         {
             Pause();
         }
-        if (Input.GetKeyDown(KeyCode.K)) {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
             keyboard = !keyboard;
             cam.GetComponent<CamScript>().keyboard = !cam.GetComponent<CamScript>().keyboard;
-            
+
             Cursor.lockState = keyboard == true ? CursorLockMode.Locked : CursorLockMode.None;
 
-<<<<<<< HEAD
         }
-=======
-
->>>>>>> hBranch
         if (!paused) {
             
             
