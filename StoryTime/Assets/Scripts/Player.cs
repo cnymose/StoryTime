@@ -82,6 +82,7 @@ public class Player : MonoBehaviour {
             Pause();
         }
 
+
         if (!paused) {
             jumped = false;
             running = Running();
