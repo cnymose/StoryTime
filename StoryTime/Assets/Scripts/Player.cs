@@ -95,7 +95,11 @@ public class Player : MonoBehaviour {
             
             Cursor.lockState = keyboard == true ? CursorLockMode.Locked : CursorLockMode.None;
 
+<<<<<<< HEAD
         }
+=======
+
+>>>>>>> hBranch
         if (!paused) {
             
             
