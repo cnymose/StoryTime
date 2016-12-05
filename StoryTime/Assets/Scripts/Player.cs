@@ -36,7 +36,7 @@ public class Player : MonoBehaviour {
     public GameObject interactable;
     public AudioClip interactClip;
     bool keyboard = false;
-    
+    bool landed;
     public float jumpSpeed;
     public bool grounded;
     bool running;
@@ -263,6 +263,7 @@ public class Player : MonoBehaviour {
         anim.SetBool("Running", running);
         anim.SetBool("Jumping", jumped);
         anim.SetFloat("Vel", input.magnitude);
+        anim.SetBool("Landing", landed);
         oldPos = transform.position;
     }
 
@@ -281,6 +282,11 @@ public class Player : MonoBehaviour {
 
     void OnControllerColliderHit(ControllerColliderHit hit) { //When the character lands on different terrain
         contactPoint = hit.point;
+        if (!grounded)
+        {
+            StartCoroutine(Landed());
+        }
+
         if (hit.gameObject.tag == "Grass") {
             CheckLand();
             if (!(terrain == "Grass")) {
@@ -312,6 +318,13 @@ public class Player : MonoBehaviour {
         
 
         }
+
+    IEnumerator Landed() {
+        landed = true;
+        yield return new WaitForSeconds(0.2f);
+        landed = false;
+        yield break;
+    }
     IEnumerator FadeFogIn()
     {
         blizzard.enabled = true;
