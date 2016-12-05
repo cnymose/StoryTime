@@ -3,9 +3,10 @@ using System.Collections;
 using UnityEngine.UI;
 public class Player : MonoBehaviour {
     public int collectibles = 0;
+    public UnityEngine.UI.Text areaText;
     public UnityEngine.UI.Image collectibleImage;
     public GameObject collectibleBG;
-    UnityEngine.UI.Text collectibleText;
+    public UnityEngine.UI.Text collectibleText;
     public AudioSource robotMovement;
     CameraFilterPack_FX_EarthQuake screenShake;
     CameraFilterPack_Atmosphere_Fog fog;
@@ -41,7 +42,7 @@ public class Player : MonoBehaviour {
     public bool grounded;
     bool running;
     Animator anim;
-    public AudioSource[] ambienceObjects;
+    public AudioSource ambienceObject;
     public AudioClip[] ambiences;
     public string terrain;
     public AudioClip[] fSteps;
@@ -52,6 +53,9 @@ public class Player : MonoBehaviour {
     public AudioClip[] runSounds;
     public AudioClip jump;
     public AudioClip land;
+    public AudioSource Soundtrack;
+    public AudioClip ForestTrack;
+    public AudioClip DesertTrack;
     public bool paused;
     public GameObject pauseUI;
     public MenuController menuController;
@@ -70,13 +74,7 @@ public class Player : MonoBehaviour {
     // Use this for initialization
     void Start() {
         fog = Camera.main.GetComponent<CameraFilterPack_Atmosphere_Fog>();
-
         blizzard = Camera.main.GetComponent<CameraFilterPack_Blizzard>();
-        collectibleImage = GameObject.Find("CollectibleImage").GetComponent<UnityEngine.UI.Image>();
-        collectibleBG = GameObject.Find("CollectibleBG");
-        collectibleBG.SetActive(false);
-        collectibleText = GameObject.Find("CollectibleCounter").GetComponent<UnityEngine.UI.Text>();
-        collectibleText.gameObject.SetActive(false);
         screenShake = Camera.main.GetComponent<CameraFilterPack_FX_EarthQuake>();
         cam = Camera.main;
         player = GetComponent<CharacterController>();
@@ -286,38 +284,8 @@ public class Player : MonoBehaviour {
         {
             StartCoroutine(Landed());
         }
-
-        if (hit.gameObject.tag == "Grass") {
-            CheckLand();
-            if (!(terrain == "Grass")) {
-                StartCoroutine(FadeFogOut());
-                terrain = "Grass";
-                for (int i = 0; i < ambienceObjects.Length; i++) {
-                   
-                    ambienceObjects[i].clip = ambiences[0];
-                    ambienceObjects[i].Play();
-                }
-            }
-        }
-        else if (hit.gameObject.tag == "Sand") {
-            CheckLand();
-            if (!(terrain == "Sand"))
-            {
-               
-                StartCoroutine(FadeFogIn());
-                terrain = "Sand";
-                for (int i = 0; i < ambienceObjects.Length; i++)
-                {
-                    ambienceObjects[i].clip = ambiences[1];
-                    ambienceObjects[i].Play();
-                }
-            }
-        }
-               
-               
-        
-
-        }
+            CheckLand();      
+                  }
 
     IEnumerator Landed() {
         landed = true;
@@ -325,6 +293,8 @@ public class Player : MonoBehaviour {
         landed = false;
         yield break;
     }
+  
+
     IEnumerator FadeFogIn()
     {
         blizzard.enabled = true;
@@ -378,6 +348,29 @@ public class Player : MonoBehaviour {
         screenShake.enabled = false;
         yield break;
     }
+
+
+    IEnumerator FadeText()
+    {
+        yield break;
+    }
+
+    IEnumerator CrossFadeSound(AudioSource source, float volume, float time, AudioClip newSound) {
+        while (source.volume > 0) {
+            source.volume -= volume/(time * 60);
+            yield return new WaitForSeconds(0.0166f);
+        }
+        source.clip = newSound;
+        source.Play();
+        while (source.volume < volume)
+        {
+            source.volume += volume / (time * 60);
+            yield return new WaitForSeconds(0.0166f);
+        }
+        yield break;
+    }
+
+
     void OnTriggerEnter(Collider other)
     {
 
@@ -392,13 +385,41 @@ public class Player : MonoBehaviour {
                 trigger.Spawn();
             }
         }
-        else if (other.tag == "Interactable" || other.tag == "Collectible") {
-            
+        else if (other.tag == "Interactable" || other.tag == "Collectible")
+        {
+
             bButton.SetActive(true);
             interactText.SetActive(true);
             interactable = other.gameObject;
         }
+
+        if (other.gameObject.tag == "Grass")
+        {
+            if (!(terrain == "Grass"))
+            {
+                CrossFadeSound(Soundtrack, 1, 1.2f, ForestTrack);
+                StartCoroutine(FadeFogOut());
+                terrain = "Grass";
+                ambienceObject.clip = ambiences[0];
+                ambienceObject.Play();
+                
+            }
+        }
+        else if (other.gameObject.tag == "Sand")
+        {
+                   
+            if (!(terrain == "Sand"))
+            {
+                CrossFadeSound(Soundtrack, 1, 1.2f, DesertTrack);
+                StartCoroutine(FadeFogIn());
+                terrain = "Sand";
+                ambienceObject.clip = ambiences[1];
+                ambienceObject.Play();
+                
+            }
+        }
     }
+
     void OnTriggerExit(Collider other)
     {
         if (other.tag == "Interactable")
