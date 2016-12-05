@@ -15,6 +15,8 @@ public class Player : MonoBehaviour {
     Camera cam;
    public bool jumped;
    public bool doubleJumped;
+    public bool forestPlaying = false;
+    public bool desertPlaying = false;
     public float gravityScale;
     public float movementSpeed;
     public float runSpeed;
@@ -35,12 +37,16 @@ public class Player : MonoBehaviour {
     public GameObject interactText;
     public GameObject interactable;
     public AudioClip interactClip;
+    public GameObject SoundtrackObj;
     bool keyboard = false;
     
     public float jumpSpeed;
     public bool grounded;
     bool running;
     Animator anim;
+    public AudioSource Soundtrack;
+    public AudioClip ForestTrack;
+    public AudioClip DesertTrack;
     public AudioSource[] ambienceObjects;
     public AudioClip[] ambiences;
     public string terrain;
@@ -76,6 +82,7 @@ public class Player : MonoBehaviour {
         source.clip = land;
         player.enabled = true;
         anim = GetComponent<Animator>();
+        Soundtrack = SoundtrackObj.GetComponent<AudioSource>();
        
     }
 
@@ -237,39 +244,39 @@ public class Player : MonoBehaviour {
 
     }
 
-    void OnControllerColliderHit(ControllerColliderHit hit) { //When the character lands on different terrain
+    //void OnControllerColliderHit(ControllerColliderHit hit) { //When the character lands on different terrain
  
-        if (hit.gameObject.tag == "Grass") {
-            CheckLand();
-            if (!(terrain == "Grass")) {
-                StartCoroutine(FadeFogOut());
-                terrain = "Grass";
-                for (int i = 0; i < ambienceObjects.Length; i++) {
+    //    if (hit.gameObject.tag == "Grass") {
+    //        CheckLand();
+    //        if (!(terrain == "Grass")) {
+    //            StartCoroutine(FadeFogOut());
+    //            terrain = "Grass";
+    //            for (int i = 0; i < ambienceObjects.Length; i++) {
                    
-                    ambienceObjects[i].clip = ambiences[0];
-                    ambienceObjects[i].Play();
-                }
-            }
-        }
-        else if (hit.gameObject.tag == "Sand") {
-            CheckLand();
-            if (!(terrain == "Sand"))
-            {
+    //                ambienceObjects[i].clip = ambiences[0];
+    //                ambienceObjects[i].Play();
+    //            }
+    //        }
+    //    }
+    //    else if (hit.gameObject.tag == "Sand") {
+    //        CheckLand();
+    //        if (!(terrain == "Sand"))
+    //        {
                
-                StartCoroutine(FadeFogIn());
-                terrain = "Sand";
-                for (int i = 0; i < ambienceObjects.Length; i++)
-                {
-                    ambienceObjects[i].clip = ambiences[1];
-                    ambienceObjects[i].Play();
-                }
-            }
-        }
+    //            StartCoroutine(FadeFogIn());
+    //            terrain = "Sand";
+    //            for (int i = 0; i < ambienceObjects.Length; i++)
+    //            {
+    //                ambienceObjects[i].clip = ambiences[1];
+    //                ambienceObjects[i].Play();
+    //            }
+    //        }
+    //  }
                
                
         
 
-        }
+      //  }
     IEnumerator FadeFogIn()
     {
         blizzard.enabled = true;
@@ -343,6 +350,52 @@ public class Player : MonoBehaviour {
             interactText.SetActive(true);
             interactable = other.gameObject;
         }
+
+        if (other.gameObject.tag == "Grass")
+        {
+            if (!forestPlaying)
+            {
+                forestPlaying = true;
+                desertPlaying = false;
+                Soundtrack.clip = ForestTrack;
+                Soundtrack.Play();
+            }
+            CheckLand();
+            if (!(terrain == "Grass"))
+            {
+                StartCoroutine(FadeFogOut());
+                terrain = "Grass";
+                for (int i = 0; i < ambienceObjects.Length; i++)
+                {
+
+                    ambienceObjects[i].clip = ambiences[0];
+                    ambienceObjects[i].Play();
+                }
+            }
+        }
+        else if (other.gameObject.tag == "Sand")
+        {
+            if (!desertPlaying)
+            {
+                desertPlaying = true;
+                forestPlaying = false;
+                Soundtrack.clip = DesertTrack;
+                Soundtrack.Play();
+            }
+            CheckLand();
+            if (!(terrain == "Sand"))
+            {
+                
+                StartCoroutine(FadeFogIn());
+                terrain = "Sand";
+                for (int i = 0; i < ambienceObjects.Length; i++)
+                {
+                    ambienceObjects[i].clip = ambiences[1];
+                    ambienceObjects[i].Play();
+                }
+            }
+        }
+
     }
     void OnTriggerExit(Collider other)
     {
