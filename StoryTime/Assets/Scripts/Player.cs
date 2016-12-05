@@ -400,7 +400,7 @@ public class Player : MonoBehaviour {
             if (!(terrain == "Grass"))
             {
                 print("Switched to ´forest");
-                StartCoroutine(CrossFadeSound(1, 1.2f, true));
+                StartCoroutine(CrossFadeSound(Soundtrack.volume, 1.2f, true));
                 StartCoroutine(FadeFogOut());
                 terrain = "Grass";
                 ambienceObject.clip = ambiences[0];
@@ -414,7 +414,7 @@ public class Player : MonoBehaviour {
             if (!(terrain == "Sand"))
             {
                 print("Switched to sand");
-                StartCoroutine(CrossFadeSound(1, 1.2f, false));
+                StartCoroutine(CrossFadeSound(Soundtrack.volume, 1.2f, false));
                 StartCoroutine(FadeFogIn());
                 terrain = "Sand";
                 ambienceObject.clip = ambiences[1];
