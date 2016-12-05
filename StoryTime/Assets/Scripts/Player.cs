@@ -127,7 +127,7 @@ public class Player : MonoBehaviour {
                 {
                     if (Vector3.Angle(hit.normal, Vector3.up) > slideLimit)
                         sliding = true;
-                    print("setslidingtrue");
+                    
                 }
                 // However, just raycasting straight down from the center can fail when on steep slopes
                 // So if the above raycast didn't catch anything, raycast down from the stored ControllerColliderHit point instead
@@ -136,7 +136,7 @@ public class Player : MonoBehaviour {
                     Physics.Raycast(contactPoint + Vector3.up, -Vector3.up, out hit);
                     if (Vector3.Angle(hit.normal, Vector3.up) > slideLimit)
                         sliding = true;
-                    print("sliding from terrain");
+                    
                 }
             }
 
@@ -186,7 +186,7 @@ public class Player : MonoBehaviour {
             {
                 if (sliding)
                 {
-                    print("sliding");
+                    
                     Vector3 hitNormal = hit.normal;
                     move = new Vector3(hitNormal.x, -hitNormal.y, hitNormal.z);
                     Vector3.OrthoNormalize(ref hitNormal, ref move);
@@ -355,16 +355,18 @@ public class Player : MonoBehaviour {
         yield break;
     }
 
-    IEnumerator CrossFadeSound(AudioSource source, float volume, float time, AudioClip newSound) {
-        while (source.volume > 0) {
-            source.volume -= volume/(time * 60);
+    IEnumerator CrossFadeSound(float volume, float time, bool forest) {
+        print("STARTED THE FUCKING COROUTINE");
+        while (Soundtrack.volume > 0) {
+            Soundtrack.volume -= volume/(time * 60);
             yield return new WaitForSeconds(0.0166f);
         }
-        source.clip = newSound;
-        source.Play();
-        while (source.volume < volume)
+        Soundtrack.clip = forest ? ForestTrack : DesertTrack;
+        
+        Soundtrack.Play();
+        while (Soundtrack.volume < volume)
         {
-            source.volume += volume / (time * 60);
+            Soundtrack.volume += volume / (time * 60);
             yield return new WaitForSeconds(0.0166f);
         }
         yield break;
@@ -397,7 +399,8 @@ public class Player : MonoBehaviour {
         {
             if (!(terrain == "Grass"))
             {
-                CrossFadeSound(Soundtrack, 1, 1.2f, ForestTrack);
+                print("Switched to ´forest");
+                StartCoroutine(CrossFadeSound(1, 1.2f, true));
                 StartCoroutine(FadeFogOut());
                 terrain = "Grass";
                 ambienceObject.clip = ambiences[0];
@@ -410,7 +413,8 @@ public class Player : MonoBehaviour {
                    
             if (!(terrain == "Sand"))
             {
-                CrossFadeSound(Soundtrack, 1, 1.2f, DesertTrack);
+                print("Switched to sand");
+                StartCoroutine(CrossFadeSound(1, 1.2f, false));
                 StartCoroutine(FadeFogIn());
                 terrain = "Sand";
                 ambienceObject.clip = ambiences[1];
