@@ -228,7 +228,7 @@ public class Player : MonoBehaviour {
                     source.clip = fSteps[(int)Random.Range(0, fSteps.Length)];
                     source.Play();
                 }
-                else if (terrain == "Sand")
+                else
                 {
                     source.clip = dSteps[(int)Random.Range(0, dSteps.Length)];
                     source.Play();
@@ -243,7 +243,7 @@ public class Player : MonoBehaviour {
                     source.clip = frSteps[(int)Random.Range(0, frSteps.Length)];
                     source.Play();
                 }
-                else if (terrain == "Sand")
+                else
                 {
                     source.clip = drSteps[(int)Random.Range(0, drSteps.Length)];
                     source.Play();
@@ -350,15 +350,34 @@ public class Player : MonoBehaviour {
     }
 
 
-    IEnumerator FadeText()
+    IEnumerator FadeText(string text)
     {
+        areaText.gameObject.SetActive(true);
+        UnityEngine.UI.Image bar = areaText.GetComponentInChildren<UnityEngine.UI.Image>();
+        areaText.color = new Color(areaText.color.r, areaText.color.b, areaText.color.g, 0);
+        bar.color = new Color(bar.color.r, bar.color.b, bar.color.g, 0);
+        areaText.text = text;
+        Color colorAdd = new Color(0, 0, 0, 0.02f); 
+        while (areaText.color.a < 1) {
+            bar.color += colorAdd;
+            areaText.color += colorAdd;
+            yield return new WaitForSeconds(0.03f);
+        }
+        yield return new WaitForSeconds(5);
+        while (areaText.color.a > 0)
+        {
+            bar.color -= colorAdd;
+            areaText.color -= colorAdd;
+            yield return new WaitForSeconds(0.03f);
+        }
+        areaText.gameObject.SetActive(false);
         yield break;
     }
 
     IEnumerator CrossFadeSound(float volume, float time, bool forest) {
         print("STARTED THE FUCKING COROUTINE");
         while (Soundtrack.volume > 0) {
-            Soundtrack.volume -= volume/(time * 60);
+            Soundtrack.volume -= volume/(time * 30);
             yield return new WaitForSeconds(0.0166f);
         }
         Soundtrack.clip = forest ? ForestTrack : DesertTrack;
@@ -420,6 +439,12 @@ public class Player : MonoBehaviour {
                 ambienceObject.clip = ambiences[1];
                 ambienceObject.Play();
                 
+            }
+        }
+        if (other.gameObject.tag == "TextCollider") {
+            StartCoroutine(FadeText(other.GetComponent<TextCollider>().text));
+            if (other.GetComponent<TextCollider>().destroy) {
+                Destroy(other.gameObject, 2);
             }
         }
     }
