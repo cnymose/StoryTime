@@ -1,0 +1,153 @@
+fileFormatVersion: 2
+guid: 8a3c113307442644db00e6733a873e5e
+timeCreated: 1480670978
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Area
+    100002: Camera
+    100004: Cube
+    100006: Cylinder
+    100008: Cylinder.001
+    100010: Eye
+    100012: EyeLidUnder
+    100014: EyeLidUpper
+    100016: Mouth
+    100018: //RootNode
+    100020: Staircase
+    400000: Area
+    400002: Camera
+    400004: Cube
+    400006: Cylinder
+    400008: Cylinder.001
+    400010: Eye
+    400012: EyeLidUnder
+    400014: EyeLidUpper
+    400016: Mouth
+    400018: //RootNode
+    400020: Staircase
+    2300000: Cube
+    2300002: Cylinder
+    2300004: Cylinder.001
+    2300006: Eye
+    2300008: EyeLidUnder
+    2300010: EyeLidUpper
+    2300012: Mouth
+    2300014: Staircase
+    3300000: Cube
+    3300002: Cylinder
+    3300004: Cylinder.001
+    3300006: Eye
+    3300008: EyeLidUnder
+    3300010: EyeLidUpper
+    3300012: Mouth
+    3300014: Staircase
+    4300000: Cylinder.001
+    4300002: Cube
+    4300004: Staircase
+    4300006: EyeLidUnder
+    4300008: EyeLidUpper
+    4300010: Eye
+    4300012: Cylinder
+    4300014: Mouth
+    7400000: Cube|CubeAction
+    7400002: Cube|CubeAction.001
+    7400004: Cube|CubeAction.002
+    7400006: Cube|Cylinder.002Action
+    7400008: Cube|Dash
+    7400010: Cube|Idle.001
+    7400012: Cube|MouthAction
+    7400014: EyeLidUnder|CubeAction
+    7400016: EyeLidUnder|CubeAction.001
+    7400018: EyeLidUnder|CubeAction.002
+    7400020: EyeLidUnder|Cylinder.002Action
+    7400022: EyeLidUnder|Dash
+    7400024: EyeLidUnder|Idle.001
+    7400026: EyeLidUnder|MouthAction
+    7400028: EyeLidUpper|CubeAction
+    7400030: EyeLidUpper|CubeAction.001
+    7400032: EyeLidUpper|CubeAction.002
+    7400034: EyeLidUpper|Cylinder.002Action
+    7400036: EyeLidUpper|Dash
+    7400038: EyeLidUpper|Idle.001
+    7400040: EyeLidUpper|MouthAction
+    7400042: Eye|CubeAction
+    7400044: Eye|CubeAction.001
+    7400046: Eye|CubeAction.002
+    7400048: Eye|Cylinder.002Action
+    7400050: Eye|Dash
+    7400052: Eye|Idle.001
+    7400054: Eye|MouthAction
+    7400056: Mouth|CubeAction
+    7400058: Mouth|CubeAction.001
+    7400060: Mouth|CubeAction.002
+    7400062: Mouth|Cylinder.002Action
+    7400064: Mouth|Dash
+    7400066: Mouth|Idle.001
+    7400068: Mouth|MouthAction
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
