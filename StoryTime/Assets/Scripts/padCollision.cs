@@ -2,13 +2,16 @@
 using System.Collections;
 
 public class padCollision : MonoBehaviour {
-    
+    public AudioSource firstDoor;
+    public AudioSource secondDoor;
+    AudioSource board;
     Animator anim;
     bool hasEntered = false;
     
     // Use this for initialization
 
     void Start () {
+        board = GetComponent<AudioSource>();
         anim = GetComponentInParent<Animator>();
        
     }
@@ -37,10 +40,13 @@ public class padCollision : MonoBehaviour {
     }
     IEnumerator ChildFix(GameObject other) {
 
-      
 
+        firstDoor.Play();
         other.transform.parent = transform;
-        yield return new WaitForSeconds(7);
+        yield return new WaitForSeconds(2);
+        secondDoor.Play();
+        board.Play();
+        yield return new WaitForSeconds(5);
         other.transform.parent = null;
         
 
