@@ -67,7 +67,7 @@ public class Player : MonoBehaviour {
     public float slideLimit = 50;
     public float slideSpeed;
     bool sliding = false;
-
+    public bool gameLinear;
     float lastMove;
     Vector3 oldPos;
 
@@ -112,9 +112,15 @@ public class Player : MonoBehaviour {
             if (interactable) {
                 if (Input.GetButtonDown("Interact"))
                 {
-                    interactable.GetComponent<Interactable>().Interact();
-                    source.clip = interactClip;
-                    source.Play();
+                    if (!gameLinear)
+                    {
+                        interactable.GetComponent<Interactable>().Interact();
+                        source.clip = interactClip;
+                        source.Play();
+                    }
+                    else {
+                        interactable.GetComponent<LinearInteractable>().Interact();
+                    }
                 }
             }
 
