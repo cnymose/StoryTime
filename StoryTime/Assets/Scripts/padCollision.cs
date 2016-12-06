@@ -23,7 +23,7 @@ public class padCollision : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.tag == "Player" && !hasEntered)
         {
             hasEntered = true;
             Debug.Log("FUCK");

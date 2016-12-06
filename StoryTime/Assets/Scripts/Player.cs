@@ -41,6 +41,7 @@ public class Player : MonoBehaviour {
     public float jumpSpeed;
     public bool grounded;
     bool running;
+    private string area;
     Animator anim;
     public AudioSource ambienceObject;
     public AudioClip[] ambiences;
@@ -54,8 +55,8 @@ public class Player : MonoBehaviour {
     public AudioClip jump;
     public AudioClip land;
     public AudioSource Soundtrack;
-    public AudioClip ForestTrack;
-    public AudioClip DesertTrack;
+    public AudioClip[] soundTracks;
+    Coroutine soundRoutine = null;
     public bool paused;
     public GameObject pauseUI;
     public MenuController menuController;
@@ -380,13 +381,16 @@ public class Player : MonoBehaviour {
         yield break;
     }
 
-    IEnumerator CrossFadeSound(float volume, float time, bool forest) {
-        print("STARTED THE FUCKING COROUTINE");
+    IEnumerator CrossFadeSound(float volume, float time, int track) {
+       
         while (Soundtrack.volume > 0) {
+            if (Soundtrack.volume < 0.03f) {
+                Soundtrack.volume = 0;
+            }
             Soundtrack.volume -= volume/(time * 30);
             yield return new WaitForSeconds(0.0166f);
         }
-        Soundtrack.clip = forest ? ForestTrack : DesertTrack;
+        Soundtrack.clip = soundTracks[track];
         
         Soundtrack.Play();
         while (Soundtrack.volume < volume)
@@ -420,41 +424,54 @@ public class Player : MonoBehaviour {
             interactable = other.gameObject;
         }
 
-        if (other.gameObject.tag == "Grass")
+        if (other.tag == "Grass" && other.tag != terrain)
         {
-            if (!(terrain == "Grass"))
-            {
-                print("Switched to ´forest");
-                StartCoroutine(CrossFadeSound(Soundtrack.volume, 1.2f, true));
-                StartCoroutine(FadeFogOut());
-                terrain = "Grass";
-                ambienceObject.clip = ambiences[0];
-                ambienceObject.Play();
-                
-            }
+            StartCoroutine(FadeFogOut());
+            ChangeSounds(0, 0, other.tag);
         }
-        else if (other.gameObject.tag == "Sand")
+        else if (other.tag == "Sand" && other.tag != terrain)
         {
-                   
-            if (!(terrain == "Sand"))
-            {
-                print("Switched to sand");
-                StartCoroutine(CrossFadeSound(Soundtrack.volume, 1.2f, false));
-                StartCoroutine(FadeFogIn());
-                terrain = "Sand";
-                ambienceObject.clip = ambiences[1];
-                ambienceObject.Play();
-                
-            }
+            StartCoroutine(FadeFogIn());
+            ChangeSounds(1, 1, other.tag);
+            
         }
-        if (other.gameObject.tag == "TextCollider") {
+        else if (other.tag == "Church" && other.tag != terrain)
+        {
+
+            ChangeSounds(2, 2, other.tag);
+            
+
+        }
+        else if (other.tag == "Bunker" && other.tag != terrain) {
+            StartCoroutine(FadeFogOut());
+            ChangeSounds(3,3,other.tag);
+            
+        }
+
+
+        if (other.GetComponent<TextCollider>())
+        {
+            if (area != other.GetComponent<TextCollider>().text) {
+                area = other.GetComponent<TextCollider>().text;
             StartCoroutine(FadeText(other.GetComponent<TextCollider>().text));
-            if (other.GetComponent<TextCollider>().destroy) {
+            if (other.GetComponent<TextCollider>().destroy)
+            {
                 Destroy(other.gameObject, 2);
             }
         }
+        }
     }
+    void ChangeSounds(int amb, int music, string tag) {
+        if (soundRoutine != null)
+        {
+            StopCoroutine(soundRoutine);
+        }
+        terrain = tag;
+        soundRoutine = StartCoroutine(CrossFadeSound(0.3f, 1.2f, music));
+        ambienceObject.clip = ambiences[amb];
+        ambienceObject.Play();
 
+    }
     void OnTriggerExit(Collider other)
     {
         if (other.tag == "Interactable")
