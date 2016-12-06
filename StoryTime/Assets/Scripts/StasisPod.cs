@@ -13,6 +13,7 @@ public class StasisPod : MonoBehaviour {
         spawnTime = Time.time;
         player = GameObject.Find("Player").GetComponent<Player>();
         StartCoroutine(Open());
+        player.canMove = false;
         
     }
 	
@@ -25,7 +26,10 @@ public class StasisPod : MonoBehaviour {
     IEnumerator Open() {
         yield return new WaitForSeconds(waitTime);
         anim.SetBool("Open", true);
-        
+        yield return new WaitForSeconds(0.8f);
+        GetComponent<AudioSource>().Play();
+        yield return new WaitForSeconds(1);
+        player.canMove = true;
         yield break;
     }
 }
