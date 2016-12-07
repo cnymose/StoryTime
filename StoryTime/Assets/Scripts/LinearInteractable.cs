@@ -14,13 +14,24 @@ public class LinearInteractable : MonoBehaviour
     public AudioClip storySound;
     AudioSource source;
     public bool hasInteracted = false;
+    public UnityEngine.UI.Text eventText;
     LinearEventController controller;
     public GameObject glow;
     Player player;
+    public string text;
+    UnityEngine.UI.Image black;
+    UnityEngine.UI.Image white;
+    public PointerScript pointer;
+    
     // Use this for initialization
     void Start()
     {
+        black = GameObject.Find("BlackUI").GetComponent<UnityEngine.UI.Image>();
         player = GameObject.Find("Player").GetComponent<Player>();
+        if (!player.gameLinear)
+        {
+            GetComponent<LinearInteractable>().enabled = false;
+        }
         controller = GameObject.Find("EventController").GetComponent<LinearEventController>();
         source = GetComponent<AudioSource>();
         // source.clip = storySound;
@@ -40,22 +51,36 @@ public class LinearInteractable : MonoBehaviour
         {
             if (collectible)
             {
+               
                 collectibleBG = player.collectibleBG;
                 collectibleImage = player.collectibleImage;
                 player.UpdateCollectibles();
                 player.canMove = false;
                 collectibleBG.SetActive(true);
-
+             
                 collectibleImage.sprite = collectibleTexture;
                 hasInteracted = true;
             }
             else
             {
-               
-                glow.GetComponent<ParticleSystem>().loop = false;
+
+                if (glow)
+                {
+                    glow.GetComponent<ParticleSystem>().loop = false;
+                }
+                pointer.shouldPlay = false;
+                pointer.GetComponent<ParticleSystem>().Stop();
+                pointer.alwaysPlay = false;
                 hasInteracted = true;
-                controller.interacted++;             
+
+                controller.interacted++;
+                if (controller.interacted <= controller.pointers.Length - 1)
+                {
+                    controller.pointers[controller.interacted].alwaysPlay = true;
+                }  
                 Interaction();
+                
+                
 
             }
 
@@ -68,7 +93,7 @@ public class LinearInteractable : MonoBehaviour
                 player.canMove = true;
                 collectibleBG.SetActive(false);
 
-                tag = " ";
+                tag = "Untagged";
                 GetComponent<Interactable>().enabled = false;
             }
             else
@@ -92,20 +117,27 @@ public class LinearInteractable : MonoBehaviour
             case 1:
                 GameObject.Find("Player").GetComponent<Player>().canMove = textObject.activeInHierarchy ? true : false;
                 textObject.SetActive(!textObject.activeInHierarchy);
-                /*if (!textObject.activeInHierarchy)
-                {
-                    textObject.SetActive(true);
-                    GameObject.Find("Player").GetComponent<Player>().canMove = false;
-                   // source.Play();
-                }
-                else {
-                  //  source.Stop();
-                    textObject.SetActive(false);
-                    GameObject.Find("Player").GetComponent<Player>().canMove = true;
-                }*/
+                eventText.text = "A segment of this entity's memory appears to remain intact: \r\n \r\n" + "'" + text + "'";
                 break;
             case 2:
+                StartCoroutine(EndGame());
                 break;
         }
+    }
+    IEnumerator EndGame() {
+        player.canMove = false;
+        yield return new WaitForSeconds(1);
+        Animator anim = GetComponent<Animator>();
+        anim.SetBool("Open", true);
+        
+        player.GetComponent<Animator>().SetBool("Dead", true);
+        yield return new WaitForSeconds(4);
+        Color add = new Color(0, 0, 0, 0.01f);
+        while (black.color.a < 1) {
+            black.color += add;
+            yield return new WaitForSeconds(0.02f);
+        }
+        //Start player animation of falling over while opening the door, and playing the sounds.
+        yield break;
     }
 }

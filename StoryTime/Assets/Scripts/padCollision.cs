@@ -26,7 +26,7 @@ public class padCollision : MonoBehaviour {
         if (other.tag == "Player" && !hasEntered)
         {
             hasEntered = true;
-            Debug.Log("FUCK");
+            
             
             
             anim.SetBool("Launch", true);
@@ -43,10 +43,12 @@ public class padCollision : MonoBehaviour {
 
         firstDoor.Play();
         other.transform.parent = transform;
+        other.GetComponent<Player>().canMove = false;
         yield return new WaitForSeconds(2);
         secondDoor.Play();
         board.Play();
         yield return new WaitForSeconds(5);
+        other.GetComponent<Player>().canMove = true;
         other.transform.parent = null;
         
 

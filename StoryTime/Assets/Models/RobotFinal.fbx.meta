@@ -161,6 +161,8 @@ ModelImporter:
     7400016: Armature|Walking.001
     7400018: Armature|Landing
     7400020: Armature|Landing.001
+    7400022: Armature|Dead
+    7400024: Armature|Landing.002
     9500000: //RootNode
     13700000: Cylinder
   materials:

@@ -11,7 +11,7 @@ public class Player : MonoBehaviour {
     CameraFilterPack_FX_EarthQuake screenShake;
     CameraFilterPack_Atmosphere_Fog fog;
     CameraFilterPack_Blizzard blizzard;
-    AudioSource source;
+    public AudioSource source;
     public bool canMove = true;
     Camera cam;
    public bool jumped;
@@ -56,6 +56,8 @@ public class Player : MonoBehaviour {
     public AudioClip land;
     public AudioSource Soundtrack;
     public AudioClip[] soundTracks;
+    public AudioSource zap;
+    public AudioClip death;
     Coroutine soundRoutine = null;
     public bool paused;
     public GameObject pauseUI;
@@ -95,6 +97,9 @@ public class Player : MonoBehaviour {
         if (Input.GetButtonDown("Pause"))
         {
             Pause();
+        }
+        if (Input.GetKeyDown(KeyCode.O)) {
+            runSpeed = runSpeed < 100 ? 200 : 22;
         }
         if (Input.GetKeyDown(KeyCode.K))
         {
@@ -170,7 +175,7 @@ public class Player : MonoBehaviour {
             }
 
             //Jump
-            if (Input.GetButtonDown("Jump"))
+            if (Input.GetButtonDown("Jump") && canMove)
             {
                 if (player.isGrounded && !sliding)
                 {
@@ -185,10 +190,13 @@ public class Player : MonoBehaviour {
                     move.y = jumpSpeed;
                               }
             }
-            if (move.magnitude > lookThreshold)
+            if (move.magnitude > lookThreshold && canMove)
             {
                 transform.LookAt(transform.position + new Vector3(move.x, 0, move.z));
             }
+            yBackup = move.y;
+            down.y = move.y;
+            move.y = 0;
             if (canMove)
             {
                 if (sliding)
@@ -200,9 +208,7 @@ public class Player : MonoBehaviour {
                     move *= slideSpeed;
                 }
                
-                    yBackup = move.y;
-                    down.y = move.y;
-                    move.y = 0;
+
                     if (!running)
                     {
                         player.Move(move * movementSpeed * Time.deltaTime);
@@ -211,10 +217,11 @@ public class Player : MonoBehaviour {
                     {
                         player.Move(move * runSpeed * Time.deltaTime);
                     }
-                    player.Move(down * gravityScale * Time.deltaTime);
-                    move.y = yBackup;
+                   
                 
             }
+            player.Move(down * gravityScale * Time.deltaTime);
+            move.y = yBackup;
         }
         if (!player.isGrounded)
         {
@@ -453,6 +460,7 @@ public class Player : MonoBehaviour {
         {
             if (area != other.GetComponent<TextCollider>().text) {
                 area = other.GetComponent<TextCollider>().text;
+                zap.Play();
             StartCoroutine(FadeText(other.GetComponent<TextCollider>().text));
             if (other.GetComponent<TextCollider>().destroy)
             {
@@ -501,7 +509,7 @@ public class Player : MonoBehaviour {
 
     IEnumerator CollectibleTick() { //Actually updates collectibles score.
         collectibleText.gameObject.SetActive(true);
-        collectibleText.text = collectibles + "/??";
+        collectibleText.text = collectibles + "/8";
         yield return new WaitForSeconds(7.5f);
         collectibleText.gameObject.SetActive(false);
         yield break;

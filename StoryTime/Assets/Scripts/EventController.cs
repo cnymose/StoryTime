@@ -19,12 +19,15 @@ public class EventController : MonoBehaviour {
 	}
 
     public void CleanUp() {
+        
         currentEvent++;
         events = GameObject.FindGameObjectsWithTag("Interactable"); //Find all Interactables as they are the "events"
         for (int i = 0; i < events.Length; i++) {
             if (events[i].GetComponent<Interactable>().sequence == currentEvent - 1) { //If they are part of the event we just had -
-
-                Destroy(events[i]); //- then Destroy
+                if (events[i].gameObject.name != "Poster")
+                {
+                    Destroy(events[i]); //- then Destroy
+                }
             }
         }
         for (int j = 0; j < triggers.Length; j++) {

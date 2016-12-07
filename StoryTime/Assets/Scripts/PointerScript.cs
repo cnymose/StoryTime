@@ -11,6 +11,8 @@ public class PointerScript : MonoBehaviour {
     public float heightScale;
     public float fadeThreshold;
     private Color partCol;
+    public bool shouldPlay = true;
+    public bool alwaysPlay = false;
     ParticleSystem.SizeOverLifetimeModule size;
     
 	// Use this for initialization
@@ -24,13 +26,20 @@ public class PointerScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        
         RaycastHit hit;
         if (Physics.Raycast(transform.position, -Vector3.up, out hit)) {
             groundHeight = transform.position.y - hit.distance;
         }
-        Vector2 playerPos = new Vector2(player.transform.position.x, player.transform.position.z);
-        Vector2 pos = new Vector2(transform.position.x, transform.position.z);
-        float dist = Vector2.Distance(playerPos, pos);
+       
+        float dist = Vector3.Distance(player.transform.position, transform.position);
+        if ((dist < 700 && !part.isPlaying && shouldPlay) || (alwaysPlay && !part.isPlaying))
+        {
+            part.Play();
+        }
+        else if (dist > 700 && part.isPlaying && !alwaysPlay) {
+            part.Stop();
+        }
         part.startColor = dist < fadeThreshold ? new Color(partCol.r,partCol.g,partCol.b, 0) : partCol;
 
         

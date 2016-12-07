@@ -11,15 +11,24 @@ public class Interactable : MonoBehaviour {
     public int type;
     public Movie holo;
     public GameObject textObject;
+    public UnityEngine.UI.Text eventText;
     public AudioClip storySound;
     AudioSource source;
     public bool hasInteracted = false;
     EventController controller;
     public GameObject glow;
     Player player;
-	// Use this for initialization
-	void Start () {
+    public string text;
+    UnityEngine.UI.Image black;
+    UnityEngine.UI.Image white;
+    public PointerScript pointer;
+    // Use this for initialization
+    void Start () {
+        black = GameObject.Find("BlackUI").GetComponent<UnityEngine.UI.Image>();
         player = GameObject.Find("Player").GetComponent<Player>();
+        if (player.gameLinear) {
+            GetComponent<Interactable>().enabled = false;
+        }
         controller = GameObject.Find("EventController").GetComponent<EventController>();
         source = GetComponent<AudioSource>();
        // source.clip = storySound;
@@ -37,6 +46,8 @@ public class Interactable : MonoBehaviour {
         {
             if (collectible)
             {
+                
+                tag = "Untagged";
                 collectibleBG = player.collectibleBG;
                 collectibleImage = player.collectibleImage;
                 player.UpdateCollectibles();
@@ -49,10 +60,14 @@ public class Interactable : MonoBehaviour {
             else
             {
                 trig.doNotSpawn = true;
-                glow.GetComponent<ParticleSystem>().loop = false;
+                if (glow)
+                {
+                    glow.GetComponent<ParticleSystem>().loop = false;
+                }
                 sequence--;
                 hasInteracted = true;
-
+                pointer.shouldPlay = false;
+                pointer.GetComponent<ParticleSystem>().Stop();
                 controller.CleanUp();
                 Interaction();
                 
@@ -88,20 +103,33 @@ public class Interactable : MonoBehaviour {
             case 1:
                 GameObject.Find("Player").GetComponent<Player>().canMove = textObject.activeInHierarchy ? true : false;
                 textObject.SetActive(!textObject.activeInHierarchy);
-                /*if (!textObject.activeInHierarchy)
-                {
-                    textObject.SetActive(true);
-                    GameObject.Find("Player").GetComponent<Player>().canMove = false;
-                   // source.Play();
-                }
-                else {
-                  //  source.Stop();
-                    textObject.SetActive(false);
-                    GameObject.Find("Player").GetComponent<Player>().canMove = true;
-                }*/
+                eventText.text = "A segment of this entity's memory appears to remain intact: \r\n \r\n" + "'" + text + "'";
                 break;
             case 2:
+                
+                StartCoroutine(EndGame());
                 break;
         }
     }
+    IEnumerator EndGame()
+    {
+        player.canMove = false;
+        yield return new WaitForSeconds(1);
+        Animator anim = GetComponent<Animator>();
+        anim.SetBool("Open", true);
+
+        player.GetComponent<Animator>().SetBool("Dead", true);
+        player.source.clip = player.death;
+        player.source.Play();
+        yield return new WaitForSeconds(4);
+        Color add = new Color(0, 0, 0, 0.01f);
+        while (black.color.a < 1)
+        {
+            black.color += add;
+            yield return new WaitForSeconds(0.02f);
+        }
+        //Start player animation of falling over while opening the door, and playing the sounds.
+        yield break;
+    }
+
 }
