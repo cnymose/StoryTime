@@ -120,6 +120,7 @@ public class Interactable : MonoBehaviour {
 
         player.GetComponent<Animator>().SetBool("Dead", true);
         player.source.clip = player.death;
+        player.source.volume = 0.2f;
         player.source.Play();
         yield return new WaitForSeconds(4);
         Color add = new Color(0, 0, 0, 0.01f);

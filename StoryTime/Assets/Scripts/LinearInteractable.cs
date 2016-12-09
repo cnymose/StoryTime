@@ -68,16 +68,20 @@ public class LinearInteractable : MonoBehaviour
                 {
                     glow.GetComponent<ParticleSystem>().loop = false;
                 }
-                pointer.shouldPlay = false;
+               
                 pointer.GetComponent<ParticleSystem>().Stop();
-                pointer.alwaysPlay = false;
+               
                 hasInteracted = true;
 
                 controller.interacted++;
-                if (controller.interacted <= controller.pointers.Length - 1)
-                {
-                    controller.pointers[controller.interacted].alwaysPlay = true;
-                }  
+                for (int i = 0; i < controller.pointers.Length; i++) {
+                    controller.pointers[i].shouldPlay = false;
+                    controller.pointers[i].alwaysPlay = false;
+
+
+                }
+                    controller.pointers[sequence+1].alwaysPlay = true;
+                
                 Interaction();
                 
                 
@@ -129,7 +133,9 @@ public class LinearInteractable : MonoBehaviour
         yield return new WaitForSeconds(1);
         Animator anim = GetComponent<Animator>();
         anim.SetBool("Open", true);
-        
+        player.source.clip = player.death;
+        player.source.volume = 0.2f;
+        player.source.Play();
         player.GetComponent<Animator>().SetBool("Dead", true);
         yield return new WaitForSeconds(4);
         Color add = new Color(0, 0, 0, 0.01f);

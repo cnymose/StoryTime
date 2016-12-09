@@ -21,7 +21,9 @@ public class StasisPod : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-       
+        if (Input.GetKeyDown(KeyCode.B)) {
+            anim.SetBool("Open",true);
+        }
             
         
 	}

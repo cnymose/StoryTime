@@ -76,6 +76,7 @@ public class Player : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
+        Cursor.visible = false;
         fog = Camera.main.GetComponent<CameraFilterPack_Atmosphere_Fog>();
         blizzard = Camera.main.GetComponent<CameraFilterPack_Blizzard>();
         screenShake = Camera.main.GetComponent<CameraFilterPack_FX_EarthQuake>();
@@ -90,18 +91,27 @@ public class Player : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (move.magnitude > 1) {
+        if (move.magnitude > 1) { // Used for long idle animation 
             
-            lastMove = Time.time;
+            lastMove = Time.time; // Logs last timestamp of movement
         }
         if (Input.GetButtonDown("Pause"))
         {
-            Pause();
+            Pause(); //Pause the game if we press pause
         }
         if (Input.GetKeyDown(KeyCode.O)) {
-            runSpeed = runSpeed < 100 ? 200 : 22;
+            runSpeed = runSpeed < 100 ? 200 : 22; //Internal test purposes
         }
-        if (Input.GetKeyDown(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.U)) { //Internal test purposes
+            transform.position += new Vector3(0, 200, 0);
+                
+                }
+        if (Input.GetKeyDown(KeyCode.Y)) //Internal test purposes
+        {
+            transform.position += Vector3.forward * 50;
+
+        }
+        if (Input.GetKeyDown(KeyCode.K)) //Internal test purposes
         {
             keyboard = !keyboard;
             cam.GetComponent<CamScript>().keyboard = !cam.GetComponent<CamScript>().keyboard;
@@ -109,35 +119,37 @@ public class Player : MonoBehaviour {
             Cursor.lockState = keyboard == true ? CursorLockMode.Locked : CursorLockMode.None;
 
         }
-        if (!paused) {
+        if (!paused) { //If not paused
 
-            sliding = false;
-            running = Running();
+            sliding = false; //Set sliding down hills to false by default
+            running = Running(); //Check if we are holding down the run button
 
             //Interact
-            if (interactable) {
-                if (Input.GetButtonDown("Interact"))
+            if (interactable) { //If we are near an interactable object
+                if (Input.GetButtonDown("Interact")) //And we press the button to interact with it
                 {
-                    if (!gameLinear)
+                    if (!gameLinear) //If the game is in non-linear mode
                     {
-                        interactable.GetComponent<Interactable>().Interact();
+                        interactable.GetComponent<Interactable>().Interact(); //Interact with it and play a sound
                         source.clip = interactClip;
                         source.Play();
                     }
                     else {
-                        interactable.GetComponent<LinearInteractable>().Interact();
+                        interactable.GetComponent<LinearInteractable>().Interact(); //Else do the same, just for the linear version
+                        source.clip = interactClip;
+                        source.Play();
                     }
                 }
             }
 
-            if (player.isGrounded)
+            if (player.isGrounded) //If the character touches the ground
             {
                 
                 // See if surface immediately below should be slid down. We use this normally rather than a ControllerColliderHit point,
                 // because that interferes with step climbing amongst other annoyances
                 if (Physics.Raycast(transform.position, -Vector3.up, out hit, rayDistance))
                 {
-                    if (Vector3.Angle(hit.normal, Vector3.up) > slideLimit)
+                    if (Vector3.Angle(hit.normal, Vector3.up) > slideLimit) //If the angle of the terrain we are on is steep enough
                         sliding = true;
                     
                 }
@@ -154,18 +166,16 @@ public class Player : MonoBehaviour {
 
 
                 yBackup = move.y;
-            input = keyboard == true ? new Vector3(Input.GetAxis("HorKey"), 0, Input.GetAxis("VertKey")) : new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+            input = keyboard == true ? new Vector3(Input.GetAxis("HorKey"), 0, Input.GetAxis("VertKey")) : new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")); 
+            //Get different input for movement depending on whether we are on Keyboard or controller
 
-
-
-            ThresholdMove(input, inputThreshold);
-            move = cam.transform.TransformDirection(input);
-
+            ThresholdMove(input, inputThreshold); //Threshhold the movement we get from the controller to a certain value
+            move = cam.transform.TransformDirection(input); //Rotate the movement from the controller to always be in the direction that the character is facing
             ThresholdMove(move, moveThreshold);
-            move.x += Mathf.Abs(move.y) * (move.x / (Mathf.Abs(move.x) + Mathf.Abs(move.z)));
+            move.x += Mathf.Abs(move.y) * (move.x / (Mathf.Abs(move.x) + Mathf.Abs(move.z))); //Makes sure that if the camera is tilted, that we don't try to move "into the ground" and lose speed on some occasions.
             move.z += Mathf.Abs(move.y) * (move.z / (Mathf.Abs(move.x) + Mathf.Abs(move.z)));
             move.y = yBackup;
-            if (float.IsNaN(move.x))
+            if (float.IsNaN(move.x)) //Checks if we actually get an input value. Fixes a null-pointer.
             {
                 move.x = 0;
             }
@@ -174,7 +184,7 @@ public class Player : MonoBehaviour {
                 move.z = 0;
             }
 
-            //Jump
+            //Jump statement
             if (Input.GetButtonDown("Jump") && canMove)
             {
                 if (player.isGrounded && !sliding)
@@ -192,12 +202,12 @@ public class Player : MonoBehaviour {
             }
             if (move.magnitude > lookThreshold && canMove)
             {
-                transform.LookAt(transform.position + new Vector3(move.x, 0, move.z));
+                transform.LookAt(transform.position + new Vector3(move.x, 0, move.z)); //Character looks in the direction that the controller is directed.
             }
             yBackup = move.y;
             down.y = move.y;
             move.y = 0;
-            if (canMove)
+            if (canMove) //Next 30 lines applies the movement to the character.
             {
                 if (sliding)
                 {
@@ -232,7 +242,7 @@ public class Player : MonoBehaviour {
             jumped = false;
         }
 
-        //Audio on terrain
+        //Audio on different types of terrain
         if (input.magnitude > 0.05f && !source.isPlaying && player.isGrounded) {
             source.pitch = 1;
             if (!running)
@@ -267,7 +277,7 @@ public class Player : MonoBehaviour {
             }
            
         }
-
+        //Finish the Update by setting some booleans and animation states.
         oldInput = input;
         grounded = player.isGrounded;
         anim.SetBool("DoubleJumped", doubleJumped);
@@ -279,7 +289,7 @@ public class Player : MonoBehaviour {
         oldPos = transform.position;
     }
 
-    Vector3 ThresholdMove(Vector3 input, float threshold) {
+    Vector3 ThresholdMove(Vector3 input, float threshold) { //Thresholds a value to zero if too low.
         if (Mathf.Abs(input.x) < threshold)
         {
             input.x = 0;
@@ -301,7 +311,7 @@ public class Player : MonoBehaviour {
             CheckLand();      
                   }
 
-    IEnumerator Landed() {
+    IEnumerator Landed() { //Turn on that we landed for a few seconds for animation purposes.
         landed = true;
         yield return new WaitForSeconds(0.2f);
         landed = false;
@@ -309,7 +319,7 @@ public class Player : MonoBehaviour {
     }
   
 
-    IEnumerator FadeFogIn()
+    IEnumerator FadeFogIn() //Fades the fog in when we enter the desert
     {
         blizzard.enabled = true;
         fog.enabled = true;
@@ -326,7 +336,7 @@ public class Player : MonoBehaviour {
         }
         yield break;
     }
-    IEnumerator FadeFogOut() {
+    IEnumerator FadeFogOut() { //Fades the fog out.
         float fogVal = 0.75f;
         float blizzVal = 0.2f;
         fog.Fade = fogVal;
@@ -342,7 +352,7 @@ public class Player : MonoBehaviour {
         yield break;
     }
 
-    void CheckLand() {
+    void CheckLand() { //Screenshakes when we land after having jumped or fallen.
 
         if (!grounded && source.clip.name == "Jump")
         {
@@ -353,7 +363,7 @@ public class Player : MonoBehaviour {
         }
     }
 
-    IEnumerator ScreenShake() {
+    IEnumerator ScreenShake() { //Shakes the screen, using a filter. 
         screenShake.enabled = true;
         screenShake.Speed = Random.Range(40, 60);
         screenShake.X = Random.Range(.004f, .01f);
@@ -364,7 +374,7 @@ public class Player : MonoBehaviour {
     }
 
 
-    IEnumerator FadeText(string text)
+    IEnumerator FadeText(string text) //Fades the text on screen in and out when transferring between areas.
     {
         areaText.gameObject.SetActive(true);
         UnityEngine.UI.Image bar = areaText.GetComponentInChildren<UnityEngine.UI.Image>();
@@ -388,7 +398,7 @@ public class Player : MonoBehaviour {
         yield break;
     }
 
-    IEnumerator CrossFadeSound(float volume, float time, int track) {
+    IEnumerator CrossFadeSound(float volume, float time, int track) { //Crossfades two sounds,  to switch music and ambience across different game areas.
        
         while (Soundtrack.volume > 0) {
             if (Soundtrack.volume < 0.03f) {
@@ -409,11 +419,11 @@ public class Player : MonoBehaviour {
     }
 
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other) //When we collide with colliders marked as triggers. 
     {
 
         print("Entered");
-        if (other.gameObject.tag == "EventTrigger")
+        if (other.gameObject.tag == "EventTrigger") //If we collide with an event-spawner, the event will be generated at its designated location.
         {
             EventSpawnTrigger trigger = other.gameObject.GetComponent<EventSpawnTrigger>();
             if (!trigger.triggered)
@@ -423,45 +433,45 @@ public class Player : MonoBehaviour {
                 trigger.Spawn();
             }
         }
-        else if (other.tag == "Interactable" || other.tag == "Collectible")
+        else if (other.tag == "Interactable" || other.tag == "Collectible") //If we approach with an event, or a collectible object.
         {
 
-            bButton.SetActive(true);
+            bButton.SetActive(true); //Show the B-button tooltip on the screen and be ready to interact. See rest in Update function
             interactText.SetActive(true);
             interactable = other.gameObject;
         }
 
-        if (other.tag == "Grass" && other.tag != terrain)
+        if (other.tag == "Grass" && other.tag != terrain) //If we land on grass
         {
             StartCoroutine(FadeFogOut());
             ChangeSounds(0, 0, other.tag);
         }
-        else if (other.tag == "Sand" && other.tag != terrain)
+        else if (other.tag == "Sand" && other.tag != terrain) //If we land on Sand
         {
             StartCoroutine(FadeFogIn());
             ChangeSounds(1, 1, other.tag);
             
         }
-        else if (other.tag == "Church" && other.tag != terrain)
+        else if (other.tag == "Church" && other.tag != terrain) //If we enter the church
         {
 
             ChangeSounds(2, 2, other.tag);
             
 
         }
-        else if (other.tag == "Bunker" && other.tag != terrain) {
+        else if (other.tag == "Bunker" && other.tag != terrain) { //If we enter a bunker
             StartCoroutine(FadeFogOut());
             ChangeSounds(3,3,other.tag);
             
         }
 
 
-        if (other.GetComponent<TextCollider>())
+        if (other.GetComponent<TextCollider>()) //If we change area in general.
         {
             if (area != other.GetComponent<TextCollider>().text) {
                 area = other.GetComponent<TextCollider>().text;
                 zap.Play();
-            StartCoroutine(FadeText(other.GetComponent<TextCollider>().text));
+            StartCoroutine(FadeText(other.GetComponent<TextCollider>().text)); //Run the function that fades the text of the area in and out. 
             if (other.GetComponent<TextCollider>().destroy)
             {
                 Destroy(other.gameObject, 2);
@@ -469,7 +479,7 @@ public class Player : MonoBehaviour {
         }
         }
     }
-    void ChangeSounds(int amb, int music, string tag) {
+    void ChangeSounds(int amb, int music, string tag) { //Another function that helps us change sound across areas. 
         if (soundRoutine != null)
         {
             StopCoroutine(soundRoutine);
@@ -480,7 +490,7 @@ public class Player : MonoBehaviour {
         ambienceObject.Play();
 
     }
-    void OnTriggerExit(Collider other)
+    void OnTriggerExit(Collider other) //When leaving an interactable collider, we hide tooltips etc. 
     {
         if (other.tag == "Interactable")
         {
@@ -493,12 +503,11 @@ public class Player : MonoBehaviour {
         interactable = null;
     }
 
-    bool Running() {
+    bool Running() { //Checks if we press the run button
         return Input.GetButton("Run");
     }
-    public void Pause() {
+    public void Pause() { //Pauses the game
         paused = !paused;
-        //Time.timeScale = Time.timeScale == 1 ? 0 : 1;
         menuController.StartDetecting(paused);
         pauseUI.SetActive(!pauseUI.activeInHierarchy);
     }
@@ -514,14 +523,4 @@ public class Player : MonoBehaviour {
         collectibleText.gameObject.SetActive(false);
         yield break;
     }
-
-
-
-   /* void OnTriggerStay(Collider other) {
-        if (other.tag == "Interactable") {
-            if (Input.GetButtonDown("Interact")) {
-                other.GetComponent<Interactable>().Interact();
-            }
-        }
-    }*/
 }
